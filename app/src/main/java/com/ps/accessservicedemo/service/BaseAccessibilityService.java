@@ -6,6 +6,7 @@ import android.accessibilityservice.GestureDescription;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Path;
 import android.os.Build;
 import android.os.Bundle;
@@ -31,25 +32,7 @@ public class BaseAccessibilityService extends AccessibilityService
      *
      */
     private AccessibilityManager mManager;
-    private GestureResultCallback gestureCallback = new AccessibilityService.GestureResultCallback() {
-        @Override
-        public void onCompleted(GestureDescription gestureDescription) {
-            Log.e(TAG,"onCompleted="+gestureDescription.toString());
-            super.onCompleted(gestureDescription);
-//                    Path path2 = new Path();
-//                    path2.moveTo(600, 600);
-//                    path2.lineTo(600, 800);
-//                    final GestureDescription.StrokeDescription sd2 = new GestureDescription.StrokeDescription(path2, 1000, 500);
-//                    //滑完后再过1秒竖滑
-//                    service.dispatchGesture(new GestureDescription.Builder().addStroke(sd2)/*.addStroke(sd2)*/.build(), null, null);
-        }
-
-        @Override
-        public void onCancelled(GestureDescription gestureDescription) {
-            Log.e(TAG,"onCancelled="+gestureDescription.toString());
-            super.onCancelled(gestureDescription);
-        }
-    };
+    private GestureResultCallback gestureCallback;
 
     public BaseAccessibilityService() {
 //        mManager = (AccessibilityManager) getApplicationContext()
@@ -62,8 +45,26 @@ public class BaseAccessibilityService extends AccessibilityService
     }
 
     @Override
-    public void onInterrupt() {
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        Log.e(TAG,"onStartCommand=");
+        return super.onStartCommand(intent, flags, startId);
+    }
 
+    @Override
+    public void onStart(Intent intent, int startId) {
+        Log.e(TAG,"onStart=");
+        super.onStart(intent, startId);
+    }
+
+    @Override
+    protected void onServiceConnected() {
+        Log.e(TAG,"onServiceConnected=");
+        super.onServiceConnected();
+    }
+
+    @Override
+    public void onInterrupt() {
+        Log.e(TAG,"onInterrupt=");
     }
 
 
@@ -99,6 +100,7 @@ public class BaseAccessibilityService extends AccessibilityService
             }
             //先横滑
             dispatchGesture(gesture, gestureCallback, null);
+        } else {
         }
     }
 
