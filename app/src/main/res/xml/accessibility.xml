@@ -8,5 +8,4 @@
     android:canRetrieveWindowContent="true"
     android:canPerformGestures="true"
     android:description="@string/lbl_auto_open_red_packet_desc"
-    android:notificationTimeout="1000"
-    android:packageNames="com.jm.video" />
+    android:notificationTimeout="1000" />
