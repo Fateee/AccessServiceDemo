@@ -98,30 +98,37 @@ public class BaseAccessibilityService extends AccessibilityService
 //            x2 = x1+random_x2
     public void dispatchGesture() {
         int random_x1 = getRandomNum(1,9);
-        int random_y1 = getRandomNum(7, 9);
-        int random_x2 = getRandomNum(1, 20);
+        int random_y1 = getRandomNum(8, 10);
+        int random_x2 = getRandomNum(1, 10);
         int random_y2 = getRandomNum(1, 3);
+        Log.e(TAG,"dispatchGesture  "+random_x1+"  "+random_y1+"  "+random_x2+" "+random_y2);
         if (CameraUtils.realWidth == 0 || CameraUtils.realHeight == 0) {
             CameraUtils.getPingMuSize(MeetAndroidApplication.getInstance());
         }
         double x1 = CameraUtils.realWidth * random_x1 * 0.1;
         double y1 = CameraUtils.realHeight * random_y1 * 0.1;
-        double x2 = x1+random_x2;
+        double controlx = getRandomNum(1, 180)+x1;
+        double controly = y1-getRandomNum(1, 300);
+        double x2 = CameraUtils.realWidth * random_x2 * 0.1;
         double y2 = CameraUtils.realHeight * random_y2 * 0.1;
-
         path.moveTo((float) x1, (float) y1);
-        path.lineTo((float) x2, (float) y2);
-        Log.e(TAG,"dispatchGesture x1 = "+x1+" y1 = "+y1+" x2 = "+x2+" y2 = "+y2);
+        path.quadTo((float)controlx,(float)controly,(float)x2,(float)y2);
+//        path.lineTo((float) x2, (float) y2);
+        Log.e(TAG,"dispatchGesture x1 = "+x1+" y1 = "+y1+" controlx = "+controlx+" controly = "+controly+" x2 = "+x2+" y2 = "+y2);
 
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+            int random_time = getRandomNum(800, 910);
             if (sd == null) {
-                sd = new GestureDescription.StrokeDescription(path, 0, 700);
+                sd = new GestureDescription.StrokeDescription(path, 0, random_time);
             }
             if (gesture == null) {
                 gesture = new GestureDescription.Builder().addStroke(sd).build();
             }
             //先横滑
-            dispatchGesture(gesture, gestureCallback, null);
+            dispatchGesture(gesture, null, null);
+            sd = null;
+            gesture = null;
+            path.reset();
         } else {
         }
     }
