@@ -7,6 +7,7 @@ import android.widget.TextView;
 
 import com.ps.accessservicedemo.other.CxHelper;
 import com.ps.accessservicedemo.other.SingletonManager;
+import com.ps.accessservicedemo.tools.CameraUtils;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -17,6 +18,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initView();
+        CameraUtils.getScreenSize(MainActivity.this);
     }
 
     private void initView() {

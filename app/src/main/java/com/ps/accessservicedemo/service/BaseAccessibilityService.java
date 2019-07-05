@@ -17,6 +17,8 @@ import android.view.accessibility.AccessibilityNodeInfo;
 
 
 import com.ps.accessservicedemo.io.IAccessbilityAction;
+import com.ps.accessservicedemo.other.MeetAndroidApplication;
+import com.ps.accessservicedemo.tools.CameraUtils;
 
 import java.util.List;
 import java.util.Random;
@@ -86,10 +88,30 @@ public class BaseAccessibilityService extends AccessibilityService
     GestureDescription.StrokeDescription sd;
     GestureDescription gesture;
     Random random = new Random();
+//    random_x = random.randint(1, 9)
+//    random_y1 = random.randint(7, 8)
+//    random_y2 = random.randint(1, 2)
+//    random_x2 = random.randint(1, 10)
+//    x1 = int(l[0] * random_x * 0.1)  # x坐标
+//    y1 = int(l[1] * random_y1 * 0.1)  # 起始y坐标
+//    y2 = int(l[1] * random_y2 * 0.1)  # 终点y坐标
+//            x2 = x1+random_x2
     public void dispatchGesture() {
-        path.moveTo(350, 1000);
-        path.lineTo(350, 100);
-        Log.e(TAG,"dispatchGesture=");
+        int random_x1 = getRandomNum(1,9);
+        int random_y1 = getRandomNum(7, 9);
+        int random_x2 = getRandomNum(1, 20);
+        int random_y2 = getRandomNum(1, 3);
+        if (CameraUtils.realWidth == 0 || CameraUtils.realHeight == 0) {
+            CameraUtils.getPingMuSize(MeetAndroidApplication.getInstance());
+        }
+        double x1 = CameraUtils.realWidth * random_x1 * 0.1;
+        double y1 = CameraUtils.realHeight * random_y1 * 0.1;
+        double x2 = x1+random_x2;
+        double y2 = CameraUtils.realHeight * random_y2 * 0.1;
+
+        path.moveTo((float) x1, (float) y1);
+        path.lineTo((float) x2, (float) y2);
+        Log.e(TAG,"dispatchGesture x1 = "+x1+" y1 = "+y1+" x2 = "+x2+" y2 = "+y2);
 
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
             if (sd == null) {
@@ -244,5 +266,17 @@ public class BaseAccessibilityService extends AccessibilityService
             }
         }
         return false;
+    }
+    /**
+     * 生成一个startNum 到 endNum之间的随机数(不包含endNum的随机数)
+     * @param startNum
+     * @param endNum
+     * @return
+     */
+    public int getRandomNum(int startNum,int endNum){
+        if(endNum > startNum){
+            return random.nextInt(endNum - startNum) + startNum;
+        }
+        return 0;
     }
 }

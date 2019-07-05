@@ -147,7 +147,8 @@ public class CameraUtils {
         float ydpi = mContext.getResources().getDisplayMetrics().ydpi;
         int width = mContext.getResources().getDisplayMetrics().widthPixels;
         int height = mContext.getResources().getDisplayMetrics().heightPixels;
-
+        realWidth = width;
+        realHeight = height;
         // 这样可以计算屏幕的物理尺寸
         float width2 = (width / xdpi)*(width / xdpi);
         float height2 = (height / ydpi)*(width / xdpi);
@@ -180,7 +181,7 @@ public class CameraUtils {
         return mInch;
     }
 
-    private static DisplayMetrics getScreenSize(Activity context) {
+    public static DisplayMetrics getScreenSize(Activity context) {
         Display display = context.getWindowManager().getDefaultDisplay();
         DisplayMetrics metrics = new DisplayMetrics();
         try {
