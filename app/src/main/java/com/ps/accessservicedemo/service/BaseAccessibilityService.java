@@ -210,6 +210,22 @@ public class BaseAccessibilityService extends AccessibilityService
         return null;
     }
 
+    public AccessibilityNodeInfo findViewByViewId(AccessibilityNodeInfo accessibilityNodeInfo, String viewId) {
+        if (accessibilityNodeInfo == null) {
+            return null;
+        }
+        List<AccessibilityNodeInfo> nodeInfoList =
+                accessibilityNodeInfo.findAccessibilityNodeInfosByViewId(viewId);
+        if (nodeInfoList != null && !nodeInfoList.isEmpty()) {
+            for (AccessibilityNodeInfo nodeInfo : nodeInfoList) {
+                if (nodeInfo != null) {
+                    return nodeInfo;
+                }
+            }
+        }
+        return null;
+    }
+
     @Override
     public void clickTextViewByText(String text) {
         AccessibilityNodeInfo accessibilityNodeInfo = getRootInActiveWindow();
