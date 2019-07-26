@@ -20,6 +20,7 @@ public class AutoGetPacketService extends BaseAccessibilityService {
     public static final String ZHUANKE = "cn.zhuanke.zhuankeAPP";
     public static final String MUI_INSTALLER = "com.miui.packageinstaller";
     public static final String MUI_securitycenter = "om.miui.securitycenter";
+    public static final String MUI_security_MUI = "com.lbe.security.miui";
     public static final String LYQ = "cn.lingyongqian.stark";
     /**
      * text
@@ -92,7 +93,7 @@ public class AutoGetPacketService extends BaseAccessibilityService {
                 boolean success = clickIKNOW.performAction(AccessibilityNodeInfo.ACTION_CLICK);
                 Log.i(TAG, "ZHUANKE success :" + success);
             }
-        }  else if (event.getPackageName().equals(MUI_securitycenter)) {
+        }  else if (event.getPackageName().equals(MUI_securitycenter) || event.getPackageName().equals(MUI_security_MUI)) {
             AccessibilityNodeInfo yesBT = findViewByText("允许",true);
             if (yesBT != null) {
                 boolean success = yesBT.performAction(AccessibilityNodeInfo.ACTION_CLICK);
