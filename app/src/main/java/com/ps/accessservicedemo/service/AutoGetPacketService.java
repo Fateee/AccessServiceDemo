@@ -22,6 +22,8 @@ public class AutoGetPacketService extends BaseAccessibilityService {
     public static final String MUI_securitycenter = "om.miui.securitycenter";
     public static final String MUI_security_MUI = "com.lbe.security.miui";
     public static final String LYQ = "cn.lingyongqian.stark";
+    public static final String XIAOZHUO = "com.xzzq.xiaozhuo";
+
     /**
      * text
      */
@@ -38,113 +40,32 @@ public class AutoGetPacketService extends BaseAccessibilityService {
         CharSequence pkg = event.getPackageName();
         Log.i(TAG, "event pkg:" + pkg+" event type:" + event.getEventType());
         if (TextUtils.isEmpty(pkg)) return;
-        if (event.getPackageName().equals(XYZQ)) {
-            AccessibilityNodeInfo task_list_rl = findViewByViewIdNoClick("com.xiaoyuzhuanqian:id/task_list_rl");
-            if (task_list_rl != null) {
-                Log.i(TAG, "task_list_rl :" + task_list_rl.toString());
-                Log.i(TAG, "count  :" + task_list_rl.getChildCount());
-                int count = task_list_rl.getChildCount();
-                for (int i = 0; i < count; i++) {
-                    AccessibilityNodeInfo item = task_list_rl.getChild(i);
-                    if (item != null) {
-                        Log.i(TAG, "item :" + item.toString()+" item count  :" + item.getChildCount());
-                        AccessibilityNodeInfo appStoreNameNode = findViewByViewId(item,"com.xiaoyuzhuanqian:id/appstore_name");
-                        if (appStoreNameNode != null) {
-                            CharSequence appStoreName = appStoreNameNode.getText();
-                            if (TextUtils.isEmpty(appStoreName)) return;
-                            Log.i(TAG, "list appStoreName :" + appStoreName);
-                            if (appStoreName.toString().contains("华为")) continue;
-                            boolean success = item.performAction(AccessibilityNodeInfo.ACTION_CLICK);
-                            if (success) break;
-                        }
-                    }
+        switch (pkg.toString()) {
+            case XYZQ:
+                autoForXyzq();
+                break;
+            case ZHUANKE:
+                autoForZk();
+                break;
+            case LYQ:
+                autoForLYQ();
+                break;
+            case XIAOZHUO:
+                autoForXiaozhuo();
+                break;
+            case MUI_securitycenter:
+            case MUI_security_MUI:
+                AccessibilityNodeInfo yesBT = findViewByText("允许",true);
+                if (yesBT != null) {
+                    boolean success = yesBT.performAction(AccessibilityNodeInfo.ACTION_CLICK);
+                    Log.i(TAG, "MUI_securitycenter success :" + success);
                 }
-                try {
-                    Thread.sleep(2*1000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                AccessibilityNodeInfo begin_get_money_btn = findViewByViewIdNoClick("com.xiaoyuzhuanqian:id/begin_get_money_btn");
-                if (begin_get_money_btn != null) {
-                    boolean success = begin_get_money_btn.performAction(AccessibilityNodeInfo.ACTION_CLICK);
-                }
-            } else {
-                if (lastResumeTime == 0L) {
-                    lastResumeTime = System.currentTimeMillis();
-                    return;
-                }
-                long now = System.currentTimeMillis();
-                Log.d(TAG, "resume now = "+now+" lastResumeTime = "+lastResumeTime+" offset "+(now-lastResumeTime));
-                if (now-lastResumeTime >10*1000) {
-                    Log.d(TAG, "dispatchGesture");
-                    lastResumeTime = System.currentTimeMillis();
-                    dispatchGesture(false);
-                }
-            }
-        } else if (event.getPackageName().equals(ZHUANKE)) {
-//            AccessibilityNodeInfo title = findViewByText("试玩任务详情");
-//            if (title != null) {
-//
-//            }
-            AccessibilityNodeInfo downProgress = findViewByViewIdNoClick("cn.zhuanke.zhuankeAPP:id/downProgress");
-            if (downProgress != null) return;
-            AccessibilityNodeInfo clickIKNOW = findViewByViewIdNoClick("cn.zhuanke.zhuankeAPP:id/dialog_btn");
-            if (clickIKNOW != null) {
-                boolean success = clickIKNOW.performAction(AccessibilityNodeInfo.ACTION_CLICK);
-                Log.i(TAG, "ZHUANKE success :" + success);
-            }
-        }  else if (event.getPackageName().equals(MUI_securitycenter) || event.getPackageName().equals(MUI_security_MUI)) {
-            AccessibilityNodeInfo yesBT = findViewByText("允许",true);
-            if (yesBT != null) {
-                boolean success = yesBT.performAction(AccessibilityNodeInfo.ACTION_CLICK);
-                Log.i(TAG, "MUI_securitycenter success :" + success);
-            }
-        } else if (event.getPackageName().equals(MUI_INSTALLER)) {
-            AccessibilityNodeInfo clickIKNOW = findViewByViewIdNoClick("com.miui.packageinstaller:id/ok_button");//安装
-            if (clickIKNOW != null) {
-                boolean success = clickIKNOW.performAction(AccessibilityNodeInfo.ACTION_CLICK);
-                Log.i(TAG, "MUI_INSTALLER success :" + success);
-            }
-//            com.miui.packageinstaller:id/done_button
-//            com.miui.packageinstaller:id/launch_button
-            AccessibilityNodeInfo launchBT = findViewByViewIdNoClick("com.miui.packageinstaller:id/launch_button");//打开
-            if (launchBT != null) {
-                boolean success = launchBT.performAction(AccessibilityNodeInfo.ACTION_CLICK);
-                Log.i(TAG, "MUI_INSTALLER launchBT success :" + success);
-                try {
-                    Thread.sleep(3*60*1000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                performGlobalAction(GLOBAL_ACTION_BACK);
-//                performGlobalAction(GLOBAL_ACTION_BACK);
-            }
-        } else if (event.getPackageName().equals(LYQ)) {
-            AccessibilityNodeInfo recyclerView = findViewByViewIdNoClick("cn.lingyongqian.stark:id/recyclerView");
-            if (recyclerView != null) {
-                Log.i(TAG, "recyclerView :" + recyclerView.toString());
-                Log.i(TAG, "count  :" + recyclerView.getChildCount());
-                int count = recyclerView.getChildCount();
-                for (int i = 6; i < count; i++) {
-                    AccessibilityNodeInfo item = recyclerView.getChild(i);
-                    if (item != null) {
-                        boolean success = item.performAction(AccessibilityNodeInfo.ACTION_CLICK);
-                        Log.i(TAG, "LYQ click item :" + success);
-                        if (success) break;
-                    }
-                }
-                try {
-                    Thread.sleep(1*1000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-            AccessibilityNodeInfo begin_get_money_btn = findViewByViewIdNoClick("cn.lingyongqian.stark:id/do_task");
-            if (begin_get_money_btn != null) {
-                boolean success = begin_get_money_btn.performAction(AccessibilityNodeInfo.ACTION_CLICK);
-            }
-            AccessibilityNodeInfo downProgress = findViewByViewIdNoClick("cn.lingyongqian.stark:id/progress");
-            if (downProgress != null) return;
+                break;
+            case MUI_INSTALLER:
+                autoInstall();
+                break;
+                default:
+                    break;
         }
 
 
@@ -177,6 +98,115 @@ public class AutoGetPacketService extends BaseAccessibilityService {
 //            dispatchGesture();
 ////            performScrollUp();
 //        }
+    }
+
+    private void autoForXiaozhuo() {
+
+    }
+
+    private void autoForLYQ() {
+        AccessibilityNodeInfo recyclerView = findViewByViewIdNoClick("cn.lingyongqian.stark:id/recyclerView");
+        if (recyclerView != null) {
+            Log.i(TAG, "recyclerView :" + recyclerView.toString());
+            Log.i(TAG, "count  :" + recyclerView.getChildCount());
+            int count = recyclerView.getChildCount();
+            for (int i = 6; i < count; i++) {
+                AccessibilityNodeInfo item = recyclerView.getChild(i);
+                if (item != null) {
+                    boolean success = item.performAction(AccessibilityNodeInfo.ACTION_CLICK);
+                    Log.i(TAG, "LYQ click item :" + success);
+                    if (success) break;
+                }
+            }
+            try {
+                Thread.sleep(1*1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        AccessibilityNodeInfo downProgress = findViewByViewIdNoClick("cn.lingyongqian.stark:id/progress");
+        if (downProgress != null) return;
+        AccessibilityNodeInfo begin_get_money_btn = findViewByViewIdNoClick("cn.lingyongqian.stark:id/do_task");
+        if (begin_get_money_btn != null) {
+            boolean success = begin_get_money_btn.performAction(AccessibilityNodeInfo.ACTION_CLICK);
+        }
+    }
+
+    private void autoInstall() {
+        AccessibilityNodeInfo clickIKNOW = findViewByViewIdNoClick("com.miui.packageinstaller:id/ok_button");//安装
+        if (clickIKNOW != null) {
+            boolean success = clickIKNOW.performAction(AccessibilityNodeInfo.ACTION_CLICK);
+            Log.i(TAG, "MUI_INSTALLER success :" + success);
+        }
+//            com.miui.packageinstaller:id/done_button
+//            com.miui.packageinstaller:id/launch_button
+        AccessibilityNodeInfo launchBT = findViewByViewIdNoClick("com.miui.packageinstaller:id/launch_button");//打开
+        if (launchBT != null) {
+            boolean success = launchBT.performAction(AccessibilityNodeInfo.ACTION_CLICK);
+            Log.i(TAG, "MUI_INSTALLER launchBT success :" + success);
+            try {
+                Thread.sleep(3*60*1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            performGlobalAction(GLOBAL_ACTION_BACK);
+//                performGlobalAction(GLOBAL_ACTION_BACK);
+        }
+    }
+
+    private void autoForZk() {
+        AccessibilityNodeInfo downProgress = findViewByViewIdNoClick("cn.zhuanke.zhuankeAPP:id/downProgress");
+        if (downProgress != null) return;
+        AccessibilityNodeInfo clickIKNOW = findViewByViewIdNoClick("cn.zhuanke.zhuankeAPP:id/dialog_btn");
+        if (clickIKNOW != null) {
+            boolean success = clickIKNOW.performAction(AccessibilityNodeInfo.ACTION_CLICK);
+            Log.i(TAG, "ZHUANKE success :" + success);
+        }
+    }
+
+    private void autoForXyzq() {
+        AccessibilityNodeInfo task_list_rl = findViewByViewIdNoClick("com.xiaoyuzhuanqian:id/task_list_rl");
+        if (task_list_rl != null) {
+            Log.i(TAG, "task_list_rl :" + task_list_rl.toString());
+            Log.i(TAG, "count  :" + task_list_rl.getChildCount());
+            int count = task_list_rl.getChildCount();
+            for (int i = 0; i < count; i++) {
+                AccessibilityNodeInfo item = task_list_rl.getChild(i);
+                if (item != null) {
+                    Log.i(TAG, "item :" + item.toString()+" item count  :" + item.getChildCount());
+                    AccessibilityNodeInfo appStoreNameNode = findViewByViewId(item,"com.xiaoyuzhuanqian:id/appstore_name");
+                    if (appStoreNameNode != null) {
+                        CharSequence appStoreName = appStoreNameNode.getText();
+                        if (TextUtils.isEmpty(appStoreName)) return;
+                        Log.i(TAG, "list appStoreName :" + appStoreName);
+                        if (appStoreName.toString().contains("华为")) continue;
+                        boolean success = item.performAction(AccessibilityNodeInfo.ACTION_CLICK);
+                        if (success) break;
+                    }
+                }
+            }
+            try {
+                Thread.sleep(2*1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            AccessibilityNodeInfo begin_get_money_btn = findViewByViewIdNoClick("com.xiaoyuzhuanqian:id/begin_get_money_btn");
+            if (begin_get_money_btn != null) {
+                boolean success = begin_get_money_btn.performAction(AccessibilityNodeInfo.ACTION_CLICK);
+            }
+        } else {
+            if (lastResumeTime == 0L) {
+                lastResumeTime = System.currentTimeMillis();
+                return;
+            }
+            long now = System.currentTimeMillis();
+            Log.d(TAG, "resume now = "+now+" lastResumeTime = "+lastResumeTime+" offset "+(now-lastResumeTime));
+            if (now-lastResumeTime >10*1000) {
+                Log.d(TAG, "dispatchGesture");
+                lastResumeTime = System.currentTimeMillis();
+                dispatchGesture(false);
+            }
+        }
     }
 
     @Override
