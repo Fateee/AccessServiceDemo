@@ -4,6 +4,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityNodeInfo;
+import android.widget.Toast;
 
 
 /**
@@ -23,7 +24,7 @@ public class AutoGetPacketService extends BaseAccessibilityService {
     public static final String MUI_security_MUI = "com.lbe.security.miui";
     public static final String LYQ = "cn.lingyongqian.stark";
     public static final String XIAOZHUO = "com.xzzq.xiaozhuo";
-
+    public static final String DDQW = "com.ddfun";
     /**
      * text
      */
@@ -52,6 +53,9 @@ public class AutoGetPacketService extends BaseAccessibilityService {
                 break;
             case XIAOZHUO:
                 autoForXiaozhuo();
+                break;
+            case DDQW:
+                autoForDDQW();
                 break;
             case MUI_securitycenter:
             case MUI_security_MUI:
@@ -98,6 +102,23 @@ public class AutoGetPacketService extends BaseAccessibilityService {
 //            dispatchGesture();
 ////            performScrollUp();
 //        }
+    }
+
+    private void autoForDDQW() {
+        AccessibilityNodeInfo start = findViewByText("开始赚钱",true);
+        if (start != null) {
+            boolean success = start.performAction(AccessibilityNodeInfo.ACTION_CLICK);
+            Log.i(TAG, "DDQW success :" + success);
+            if (success) {
+                try {
+                    Thread.sleep(16*1000);
+                    Toast.makeText(this,"可以了..........",Toast.LENGTH_LONG).show();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+
+        }
     }
 
     private void autoForXiaozhuo() {
