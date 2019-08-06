@@ -1,10 +1,14 @@
 package com.ps.accessservicedemo.service;
 
+import android.content.Intent;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityNodeInfo;
 import android.widget.Toast;
+
+import com.ps.accessservicedemo.MainActivity;
+import com.ps.accessservicedemo.tools.PacketUtil;
 
 
 /**
@@ -25,6 +29,9 @@ public class AutoGetPacketService extends BaseAccessibilityService {
     public static final String LYQ = "cn.lingyongqian.stark";
     public static final String XIAOZHUO = "com.xzzq.xiaozhuo";
     public static final String DDQW = "com.ddfun";
+
+    public static final String DINGDING = "com.alibaba.android.rimet";
+
     /**
      * text
      */
@@ -41,6 +48,15 @@ public class AutoGetPacketService extends BaseAccessibilityService {
         CharSequence pkg = event.getPackageName();
         Log.i(TAG, "event pkg:" + pkg+" event type:" + event.getEventType());
         if (TextUtils.isEmpty(pkg)) return;
+//        if (click) return;
+//        try {
+//            Thread.sleep(10*1000);
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
+//        click = true;
+////        openApp(DINGDING);
+//        PacketUtil.openAPP(DINGDING);
         switch (pkg.toString()) {
             case XYZQ:
                 autoForXyzq();
@@ -122,7 +138,78 @@ public class AutoGetPacketService extends BaseAccessibilityService {
     }
 
     private void autoForXiaozhuo() {
+        AccessibilityNodeInfo dialogTitle = findViewByViewIdNoClick("com.xzzq.xiaozhuo:id/task_title");
+        if (dialogTitle != null) {
+            CharSequence title = dialogTitle.getText();
+            if (!TextUtils.isEmpty(title)&& ("每日任务".equals(title))) {
+                AccessibilityNodeInfo startEveryDay = findViewByViewIdNoClick("com.xzzq.xiaozhuo:id/task_button_right");
+                boolean startEveryDayBtOk = startEveryDay.performAction(AccessibilityNodeInfo.ACTION_CLICK);
+                try {
+                    Thread.sleep(1*1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                AccessibilityNodeInfo okIKnow = findViewByViewIdNoClick("com.xzzq.xiaozhuo:id/task_guide_confirm_btn");
+                if (okIKnow != null) {
+                    try {
+                        Thread.sleep(4*1000);
+                        boolean okIKnowOk = okIKnow.performAction(AccessibilityNodeInfo.ACTION_CLICK);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
 
+            } else {
+                AccessibilityNodeInfo changeBt = findViewByViewIdNoClick("com.xzzq.xiaozhuo:id/task_button_left");
+                boolean changeBtOk = changeBt.performAction(AccessibilityNodeInfo.ACTION_CLICK);
+                return;
+            }
+        }
+        //每日任务
+        AccessibilityNodeInfo status1 = findViewByViewIdNoClick("com.xzzq.xiaozhuo:id/normal_task_status_1");
+        performClickXiaoZhuo(status1);
+        AccessibilityNodeInfo status2 = findViewByViewIdNoClick("com.xzzq.xiaozhuo:id/normal_task_status_2");
+        performClickXiaoZhuo(status2);
+        AccessibilityNodeInfo status3 = findViewByViewIdNoClick("com.xzzq.xiaozhuo:id/normal_task_status_3");
+        performClickXiaoZhuo(status3);
+        AccessibilityNodeInfo openAd = findViewByViewIdNoClick("com.xzzq.xiaozhuo:id/video_task_open_ad");
+        performClickXiaoZhuo(openAd);
+
+        AccessibilityNodeInfo confirmBt = findViewByViewIdNoClick("com.xzzq.xiaozhuo:id/daily_task_confirm_btn");
+        if (confirmBt != null) {
+            boolean confirmBtOk = confirmBt.performAction(AccessibilityNodeInfo.ACTION_CLICK);
+        }
+        AccessibilityNodeInfo goonBt = findViewByViewIdNoClick("com.xzzq.xiaozhuo:id/finish_task_left_btn");
+        if (goonBt != null) {
+            boolean goonBtOk = goonBt.performAction(AccessibilityNodeInfo.ACTION_CLICK);
+        }
+    }
+
+    private boolean performClickXiaoZhuo(AccessibilityNodeInfo status) {
+        if (status != null) {
+            CharSequence text = status.getText();
+            if (!TextUtils.isEmpty(text)&& ("打开试玩".equals(text) || "去观看".equals(text))) {
+                boolean success = status.performAction(AccessibilityNodeInfo.ACTION_CLICK);
+                delaySecond(31);
+                Toast.makeText(this,"我好了我好了我好了......",Toast.LENGTH_LONG).show();
+                AccessibilityNodeInfo closeAd = findViewByViewIdNoClick("com.xzzq.xiaozhuo:id/tt_video_ad_close");
+                if (closeAd != null) {
+                    boolean closeAdSuccess = closeAd.performAction(AccessibilityNodeInfo.ACTION_CLICK);
+                    return closeAdSuccess;
+                }
+                delaySecond(1);
+                return success;
+            }
+        }
+        return false;
+    }
+
+    private void delaySecond(int count) {
+        try {
+            Thread.sleep(count*1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     private void autoForLYQ() {

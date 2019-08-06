@@ -10,6 +10,7 @@ import com.ps.accessservicedemo.other.CxHelper;
 import com.ps.accessservicedemo.other.SingletonManager;
 import com.ps.accessservicedemo.service.AutoGetPacketService;
 import com.ps.accessservicedemo.tools.CameraUtils;
+import com.ps.accessservicedemo.tools.PacketUtil;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -37,24 +38,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 SingletonManager.get(CxHelper.class).openAccessSetting();
                 break;
             case R.id.xiaoyumoney:
-                openAPP(AutoGetPacketService.XYZQ);
+                PacketUtil.openAPP(AutoGetPacketService.XYZQ);
                 break;
             case R.id.lingyongmoney:
-                openAPP(AutoGetPacketService.LYQ);
+                PacketUtil.openAPP(AutoGetPacketService.LYQ);
                 break;
             case R.id.zhuanke:
-                openAPP(AutoGetPacketService.ZHUANKE);
+                PacketUtil.openAPP(AutoGetPacketService.ZHUANKE);
                 break;
             default:
                 break;
         }
     }
 
-    public void openAPP(String pkg) {
-        Intent intent = getPackageManager().getLaunchIntentForPackage(pkg);
-        if (intent != null) {
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(intent);
-        }
-    }
+
 }
