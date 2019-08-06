@@ -22,6 +22,7 @@ public class AutoGetPacketService extends BaseAccessibilityService {
      */
     public static final String WX_PACKAGE_NAME = "com.tencent.mm";
     public static final String SB_PACKAGE_NAME = "com.jm.video";
+    public static final String QK_PACKAGE_NAME = "com.jifen.qukan";
     public static final String XYZQ = "com.xiaoyuzhuanqian";
     public static final String ZHUANKE = "cn.zhuanke.zhuankeAPP";
     public static final String MUI_INSTALLER = "com.miui.packageinstaller";
@@ -87,6 +88,12 @@ public class AutoGetPacketService extends BaseAccessibilityService {
                 break;
             case SB_PACKAGE_NAME:
 
+                break;
+            case QK_PACKAGE_NAME:
+                AccessibilityNodeInfo viewByText = findViewByText("小视频");
+                if (viewByText != null) {
+                    performViewClick(viewByText);
+                }
                 break;
                 default:
                     break;
