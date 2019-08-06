@@ -8,6 +8,7 @@ import android.view.accessibility.AccessibilityNodeInfo;
 import android.widget.Toast;
 
 import com.ps.accessservicedemo.MainActivity;
+import com.ps.accessservicedemo.other.MeetAndroidApplication;
 import com.ps.accessservicedemo.tools.PacketUtil;
 
 
@@ -84,6 +85,9 @@ public class AutoGetPacketService extends BaseAccessibilityService {
             case MUI_INSTALLER:
                 autoInstall();
                 break;
+            case SB_PACKAGE_NAME:
+
+                break;
                 default:
                     break;
         }
@@ -121,19 +125,22 @@ public class AutoGetPacketService extends BaseAccessibilityService {
     }
 
     private void autoForDDQW() {
-        AccessibilityNodeInfo start = findViewByText("开始赚钱",true);
-        if (start != null) {
-            boolean success = start.performAction(AccessibilityNodeInfo.ACTION_CLICK);
-            Log.i(TAG, "DDQW success :" + success);
-            if (success) {
-                try {
-                    Thread.sleep(16*1000);
-                    Toast.makeText(this,"可以了..........",Toast.LENGTH_LONG).show();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
+        AccessibilityNodeInfo leftRB = findViewByViewIdNoClick("com.ddfun:id/tab_activity_radiogbutton1");
+        AccessibilityNodeInfo rightRB = findViewByViewIdNoClick("com.ddfun:id/tab_activity_radiogbutton2");
+        if (rightRB != null && rightRB.isChecked()) {
+            AccessibilityNodeInfo yesBT = findViewByText("开始赚钱",true);
+            if (yesBT == null) {
+                yesBT = findViewByText("打开",true);
+                Log.i(TAG, "打开 ....:");
+            }
+            if (yesBT != null) {
+                boolean success = yesBT.performAction(AccessibilityNodeInfo.ACTION_CLICK);
+                Log.i(TAG, "dou dou qu wan click success :" + success);
+                if (success) {
+                    delaySecond(16);
+//                    Toast.makeText(AutoGetPacketService.this,"可以了..........",Toast.LENGTH_LONG).show();
                 }
             }
-
         }
     }
 
