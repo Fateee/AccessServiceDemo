@@ -55,7 +55,7 @@ public class AutoOpenRedPacketService extends BaseAccessibilityService {
                 try {
                     int randomTime = getRandomNum(13, 30);
                     Thread.sleep(randomTime * 1000);
-                    dispatchGesture();
+                    dispatchGesture(true);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
