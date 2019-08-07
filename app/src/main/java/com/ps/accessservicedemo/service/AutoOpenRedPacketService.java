@@ -37,7 +37,8 @@ public class AutoOpenRedPacketService extends BaseAccessibilityService {
         if (seekbar != null) {
 //            Log.i(TAG, "seekbar :" + seekbar.toString());
         }
-        if (event.getEventType() == AccessibilityEvent.TYPE_VIEW_SELECTED) {
+        String packageName = event.getPackageName().toString();
+        if (event.getEventType() == AccessibilityEvent.TYPE_VIEW_SELECTED && packageName.equals(SB_PACKAGE_NAME)) {
             if (lastResumeTime == 0L) {
                 lastResumeTime = System.currentTimeMillis();
                 return;
@@ -48,6 +49,16 @@ public class AutoOpenRedPacketService extends BaseAccessibilityService {
                 Log.d(TAG, "dispatchGesture");
                 lastResumeTime = System.currentTimeMillis();
                 dispatchGesture();
+            }
+        } else {
+            while (true) {
+                try {
+                    int randomTime = getRandomNum(13, 30);
+                    Thread.sleep(randomTime * 1000);
+                    dispatchGesture();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
         }
 //        while (true) {
