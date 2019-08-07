@@ -48,7 +48,7 @@ public class AutoOpenRedPacketService extends BaseAccessibilityService {
             if (now-lastResumeTime >10*1000) {
                 Log.d(TAG, "dispatchGesture");
                 lastResumeTime = System.currentTimeMillis();
-                dispatchGesture();
+                dispatchGesture(true);
             }
         } else {
             while (true) {

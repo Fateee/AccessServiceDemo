@@ -65,6 +65,12 @@ public class BaseAccessibilityService extends AccessibilityService
     }
 
     @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.e(TAG,"onDestroy=");
+    }
+
+    @Override
     public void onInterrupt() {
         Log.e(TAG,"onInterrupt=");
     }
@@ -96,7 +102,8 @@ public class BaseAccessibilityService extends AccessibilityService
 //    y1 = int(l[1] * random_y1 * 0.1)  # 起始y坐标
 //    y2 = int(l[1] * random_y2 * 0.1)  # 终点y坐标
 //            x2 = x1+random_x2
-    public void dispatchGesture() {
+    public void dispatchGesture(boolean up) {
+
         int random_x1 = getRandomNum(1,9);
         int random_y1 = getRandomNum(8, 10);
         int random_x2 = getRandomNum(1, 10);
@@ -111,8 +118,14 @@ public class BaseAccessibilityService extends AccessibilityService
         double controly = y1-getRandomNum(1, 300);
         double x2 = CameraUtils.realWidth * random_x2 * 0.1;
         double y2 = CameraUtils.realHeight * random_y2 * 0.1;
-        path.moveTo((float) x1, (float) y1);
-        path.quadTo((float)controlx,(float)controly,(float)x2,(float)y2);
+        if (up) {
+            path.moveTo((float) x1, (float) y1);
+            path.quadTo((float)controlx,(float)controly,(float)x2,(float)y2);
+        } else {
+            path.moveTo((float) x2, (float) y2);
+            path.quadTo((float)controlx,(float)controly,(float)x1,(float)y1);
+        }
+
 //        path.lineTo((float) x2, (float) y2);
         Log.e(TAG,"dispatchGesture x1 = "+x1+" y1 = "+y1+" controlx = "+controlx+" controly = "+controly+" x2 = "+x2+" y2 = "+y2);
 
@@ -195,6 +208,22 @@ public class BaseAccessibilityService extends AccessibilityService
 
     public AccessibilityNodeInfo findViewByViewIdNoClick(String viewId) {
         AccessibilityNodeInfo accessibilityNodeInfo = getRootInActiveWindow();
+        if (accessibilityNodeInfo == null) {
+            return null;
+        }
+        List<AccessibilityNodeInfo> nodeInfoList =
+                accessibilityNodeInfo.findAccessibilityNodeInfosByViewId(viewId);
+        if (nodeInfoList != null && !nodeInfoList.isEmpty()) {
+            for (AccessibilityNodeInfo nodeInfo : nodeInfoList) {
+                if (nodeInfo != null) {
+                    return nodeInfo;
+                }
+            }
+        }
+        return null;
+    }
+
+    public AccessibilityNodeInfo findViewByViewId(AccessibilityNodeInfo accessibilityNodeInfo, String viewId) {
         if (accessibilityNodeInfo == null) {
             return null;
         }

@@ -18,7 +18,7 @@
             </intent-filter>
         </activity>
         <service
-            android:name=".service.AutoOpenRedPacketService"
+            android:name=".service.AutoGetPacketService"
             android:label="@string/lbl_auto_open_red_packet"
             android:enabled="true"
             android:exported="true"

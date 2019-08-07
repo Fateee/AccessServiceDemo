@@ -2,6 +2,8 @@
     <string name="app_name">AutoSwipe</string>
     <string name="lbl_access_desc">access服务</string>
     <string name="lbl_auto_open_red_packet">Android-刷宝</string>
-    <string name="lbl_auto_open_red_packet_desc">打开微信红包界面，自动抢红包</string>
+    <string name="lbl_auto_open_red_packet_desc">反正就是自动</string>
     <string name="lbl_open_access">点击开启辅助功能权限</string>
+
+    <string name="lbl_auto_get_packet">自动任务</string>
 </resources>

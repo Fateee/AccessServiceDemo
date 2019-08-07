@@ -4,14 +4,29 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:gravity="center"
     android:orientation="vertical">
 
-    <TextView
+    <android.support.v7.widget.AppCompatButton
         android:id="@+id/openAccess"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:padding="10dp"
         android:text="@string/lbl_open_access" />
-
+    <android.support.v7.widget.AppCompatButton
+        android:id="@+id/xiaoyumoney"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="小鱼赚钱" />
+    <android.support.v7.widget.AppCompatButton
+        android:id="@+id/lingyongmoney"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="零用钱" />
+    <android.support.v7.widget.AppCompatButton
+        android:id="@+id/zhuanke"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="赚客" />
 </LinearLayout>
