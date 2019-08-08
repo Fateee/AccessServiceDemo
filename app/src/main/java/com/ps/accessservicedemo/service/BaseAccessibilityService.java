@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.graphics.Path;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityManager;
@@ -102,8 +103,7 @@ public class BaseAccessibilityService extends AccessibilityService
 //    y1 = int(l[1] * random_y1 * 0.1)  # 起始y坐标
 //    y2 = int(l[1] * random_y2 * 0.1)  # 终点y坐标
 //            x2 = x1+random_x2
-    public void dispatchGesture(boolean up) {
-
+    public void dispatchGesture(boolean up,String name) {
         int random_x1 = getRandomNum(1,9);
         int random_y1 = getRandomNum(8, 10);
         int random_x2 = getRandomNum(1, 10);
@@ -143,9 +143,16 @@ public class BaseAccessibilityService extends AccessibilityService
             gesture = null;
             path.reset();
         } else {
+            if (TextUtils.isEmpty(name)) return;
+            AccessibilityNodeInfo viewByText = findViewByText(name);
+            if (viewByText != null) {
+                performViewClick(viewByText);
+            }
         }
     }
-
+    public void dispatchGesture(boolean up) {
+        dispatchGesture(up,"");
+    }
     @Override
     public void performViewClick(AccessibilityNodeInfo nodeInfo) {
         if (nodeInfo == null) {

@@ -87,12 +87,27 @@ public class AutoGetPacketService extends BaseAccessibilityService {
                 autoInstall();
                 break;
             case SB_PACKAGE_NAME:
-
+                if (event.getEventType() == AccessibilityEvent.TYPE_VIEW_SELECTED) {
+                    if (lastResumeTime == 0L) {
+                        lastResumeTime = System.currentTimeMillis();
+                        return;
+                    }
+                    long now = System.currentTimeMillis();
+                    Log.d(TAG, "resume now = "+now+" lastResumeTime = "+lastResumeTime+" offset "+(now-lastResumeTime));
+                    if (now-lastResumeTime >10*1000) {
+                        Log.d(TAG, "dispatchGesture");
+                        lastResumeTime = System.currentTimeMillis();
+                        dispatchGesture(true,"首页");
+                    }
+                }
                 break;
             case QK_PACKAGE_NAME:
-                AccessibilityNodeInfo viewByText = findViewByText("小视频");
-                if (viewByText != null) {
-                    performViewClick(viewByText);
+                try {
+                    int randomTime = getRandomNum(13, 30);
+                    Thread.sleep(randomTime * 1000);
+                    dispatchGesture(true,"小视频");
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
                 }
                 break;
                 default:
@@ -157,24 +172,27 @@ public class AutoGetPacketService extends BaseAccessibilityService {
             CharSequence title = dialogTitle.getText();
             if (!TextUtils.isEmpty(title)&& ("每日任务".equals(title))) {
                 AccessibilityNodeInfo startEveryDay = findViewByViewIdNoClick("com.xzzq.xiaozhuo:id/task_button_right");
-                boolean startEveryDayBtOk = startEveryDay.performAction(AccessibilityNodeInfo.ACTION_CLICK);
-                try {
-                    Thread.sleep(1*1000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                AccessibilityNodeInfo okIKnow = findViewByViewIdNoClick("com.xzzq.xiaozhuo:id/task_guide_confirm_btn");
-                if (okIKnow != null) {
+                if (startEveryDay != null) {
+                    boolean startEveryDayBtOk = startEveryDay.performAction(AccessibilityNodeInfo.ACTION_CLICK);
                     try {
-                        Thread.sleep(4*1000);
-                        boolean okIKnowOk = okIKnow.performAction(AccessibilityNodeInfo.ACTION_CLICK);
+                        Thread.sleep(1*1000);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
+                    }
+                    AccessibilityNodeInfo okIKnow = findViewByViewIdNoClick("com.xzzq.xiaozhuo:id/task_guide_confirm_btn");
+                    if (okIKnow != null) {
+                        try {
+                            Thread.sleep(4*1000);
+                            boolean okIKnowOk = okIKnow.performAction(AccessibilityNodeInfo.ACTION_CLICK);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
                     }
                 }
 
             } else {
                 AccessibilityNodeInfo changeBt = findViewByViewIdNoClick("com.xzzq.xiaozhuo:id/task_button_left");
+                if (changeBt == null) return;
                 boolean changeBtOk = changeBt.performAction(AccessibilityNodeInfo.ACTION_CLICK);
                 return;
             }
@@ -205,7 +223,6 @@ public class AutoGetPacketService extends BaseAccessibilityService {
             if (!TextUtils.isEmpty(text)&& ("打开试玩".equals(text) || "去观看".equals(text))) {
                 boolean success = status.performAction(AccessibilityNodeInfo.ACTION_CLICK);
                 delaySecond(31);
-                Toast.makeText(this,"我好了我好了我好了......",Toast.LENGTH_LONG).show();
                 AccessibilityNodeInfo closeAd = findViewByViewIdNoClick("com.xzzq.xiaozhuo:id/tt_video_ad_close");
                 if (closeAd != null) {
                     boolean closeAdSuccess = closeAd.performAction(AccessibilityNodeInfo.ACTION_CLICK);
