@@ -343,7 +343,7 @@ public class AutoGetPacketService extends BaseAccessibilityService {
             if (now-lastResumeTime >10*1000) {
                 Log.d(TAG, "dispatchGesture");
                 lastResumeTime = System.currentTimeMillis();
-                dispatchGesture(false);
+                dispatchGesture(true);
             }
         }
     }
