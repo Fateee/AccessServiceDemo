@@ -3,8 +3,10 @@ package com.ps.accessservicedemo.service;
 import android.accessibilityservice.AccessibilityService;
 import android.accessibilityservice.AccessibilityServiceInfo;
 import android.accessibilityservice.GestureDescription;
+import android.app.ActivityManager;
 import android.content.ClipData;
 import android.content.ClipboardManager;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Path;
@@ -49,31 +51,31 @@ public class BaseAccessibilityService extends AccessibilityService
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Log.e(TAG,"onStartCommand=");
+        Log.e(TAG, "onStartCommand=");
         return super.onStartCommand(intent, flags, startId);
     }
 
     @Override
     public void onStart(Intent intent, int startId) {
-        Log.e(TAG,"onStart=");
+        Log.e(TAG, "onStart=");
         super.onStart(intent, startId);
     }
 
     @Override
     protected void onServiceConnected() {
-        Log.e(TAG,"onServiceConnected=");
+        Log.e(TAG, "onServiceConnected=");
         super.onServiceConnected();
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        Log.e(TAG,"onDestroy=");
+        Log.e(TAG, "onDestroy=");
     }
 
     @Override
     public void onInterrupt() {
-        Log.e(TAG,"onInterrupt=");
+        Log.e(TAG, "onInterrupt=");
     }
 
 
@@ -91,11 +93,13 @@ public class BaseAccessibilityService extends AccessibilityService
     public void performScrollDown() {
         performGlobalAction(AccessibilityNodeInfo.ACTION_SCROLL_BACKWARD);
     }
+
     Path path = new Path();
     GestureDescription.StrokeDescription sd;
     GestureDescription gesture;
     Random random = new Random();
-//    random_x = random.randint(1, 9)
+
+    //    random_x = random.randint(1, 9)
 //    random_y1 = random.randint(7, 8)
 //    random_y2 = random.randint(1, 2)
 //    random_x2 = random.randint(1, 10)
@@ -103,31 +107,31 @@ public class BaseAccessibilityService extends AccessibilityService
 //    y1 = int(l[1] * random_y1 * 0.1)  # 起始y坐标
 //    y2 = int(l[1] * random_y2 * 0.1)  # 终点y坐标
 //            x2 = x1+random_x2
-    public void dispatchGesture(boolean up,String name) {
-        int random_x1 = getRandomNum(1,9);
+    public void dispatchGesture(boolean up, String name) {
+        int random_x1 = getRandomNum(1, 9);
         int random_y1 = getRandomNum(8, 10);
         int random_x2 = getRandomNum(1, 10);
         int random_y2 = getRandomNum(1, 3);
-        Log.e(TAG,"dispatchGesture  "+random_x1+"  "+random_y1+"  "+random_x2+" "+random_y2);
+        Log.e(TAG, "dispatchGesture  " + random_x1 + "  " + random_y1 + "  " + random_x2 + " " + random_y2);
         if (CameraUtils.realWidth == 0 || CameraUtils.realHeight == 0) {
             CameraUtils.getPingMuSize(MeetAndroidApplication.getInstance());
         }
         double x1 = CameraUtils.realWidth * random_x1 * 0.1;
         double y1 = CameraUtils.realHeight * random_y1 * 0.1;
-        double controlx = getRandomNum(1, 180)+x1;
-        double controly = y1-getRandomNum(1, 300);
+        double controlx = getRandomNum(1, 180) + x1;
+        double controly = y1 - getRandomNum(1, 300);
         double x2 = CameraUtils.realWidth * random_x2 * 0.1;
         double y2 = CameraUtils.realHeight * random_y2 * 0.1;
         if (up) {
             path.moveTo((float) x1, (float) y1);
-            path.quadTo((float)controlx,(float)controly,(float)x2,(float)y2);
+            path.quadTo((float) controlx, (float) controly, (float) x2, (float) y2);
         } else {
             path.moveTo((float) x2, (float) y2);
-            path.quadTo((float)controlx,(float)controly,(float)x1,(float)y1);
+            path.quadTo((float) controlx, (float) controly, (float) x1, (float) y1);
         }
 
 //        path.lineTo((float) x2, (float) y2);
-        Log.e(TAG,"dispatchGesture x1 = "+x1+" y1 = "+y1+" controlx = "+controlx+" controly = "+controly+" x2 = "+x2+" y2 = "+y2);
+        Log.e(TAG, "dispatchGesture x1 = " + x1 + " y1 = " + y1 + " controlx = " + controlx + " controly = " + controly + " x2 = " + x2 + " y2 = " + y2);
 
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
             int random_time = getRandomNum(800, 910);
@@ -145,7 +149,7 @@ public class BaseAccessibilityService extends AccessibilityService
         } else {
             if (TextUtils.isEmpty(name)) return;
             AccessibilityNodeInfo accessibilityNodeInfo = getRootInActiveWindow();
-            click(accessibilityNodeInfo,name);
+            click(accessibilityNodeInfo, name);
 //            AccessibilityNodeInfo viewByText = findViewByText(name);
 //            if (viewByText != null) {
 //                performViewClick(viewByText);
@@ -153,7 +157,7 @@ public class BaseAccessibilityService extends AccessibilityService
         }
     }
 
-    public void click(AccessibilityNodeInfo paramAccessibilityNodeInfo,String name) {
+    public void click(AccessibilityNodeInfo paramAccessibilityNodeInfo, String name) {
         if (paramAccessibilityNodeInfo == null) return;
         if (name.equals(paramAccessibilityNodeInfo.getText())) {
             if (paramAccessibilityNodeInfo.isClickable()) {
@@ -174,12 +178,14 @@ public class BaseAccessibilityService extends AccessibilityService
         }
         for (byte b1 = 0; b1 < paramAccessibilityNodeInfo.getChildCount(); b1++) {
             if (paramAccessibilityNodeInfo.getChild(b1) != null)
-                click(paramAccessibilityNodeInfo.getChild(b1),name);
+                click(paramAccessibilityNodeInfo.getChild(b1), name);
         }
     }
+
     public void dispatchGesture(boolean up) {
-        dispatchGesture(up,"");
+        dispatchGesture(up, "");
     }
+
     @Override
     public void performViewClick(AccessibilityNodeInfo nodeInfo) {
         if (nodeInfo == null) {
@@ -337,16 +343,28 @@ public class BaseAccessibilityService extends AccessibilityService
         }
         return false;
     }
+
     /**
      * 生成一个startNum 到 endNum之间的随机数(不包含endNum的随机数)
+     *
      * @param startNum
      * @param endNum
      * @return
      */
-    public int getRandomNum(int startNum,int endNum){
-        if(endNum > startNum){
+    public int getRandomNum(int startNum, int endNum) {
+        if (endNum > startNum) {
             return random.nextInt(endNum - startNum) + startNum;
         }
         return 0;
+    }
+
+    public String getTopActivity() {
+        String pkg = "";
+        ActivityManager am = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
+        ComponentName cn = am.getRunningTasks(1).get(0).topActivity;
+        pkg = cn.getPackageName();
+        Log.e("huyi", "pkg:"+pkg);
+        Log.e("huyi", "cls:"+cn.getClassName());
+        return pkg;
     }
 }

@@ -1,6 +1,8 @@
 package com.ps.accessservicedemo.service;
 
 import android.content.Intent;
+import android.os.Handler;
+import android.os.Message;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.accessibility.AccessibilityEvent;
@@ -10,6 +12,7 @@ import android.widget.Toast;
 import com.ps.accessservicedemo.MainActivity;
 import com.ps.accessservicedemo.other.MeetAndroidApplication;
 import com.ps.accessservicedemo.tools.PacketUtil;
+
 
 
 /**
@@ -23,6 +26,7 @@ public class AutoGetPacketService extends BaseAccessibilityService {
     public static final String WX_PACKAGE_NAME = "com.tencent.mm";
     public static final String SB_PACKAGE_NAME = "com.jm.video";
     public static final String QK_PACKAGE_NAME = "com.jifen.qukan";
+    private static final int QK_PACKAGE_NAME_VALUE = 520;
     public static final String XYZQ = "com.xiaoyuzhuanqian";
     public static final String ZHUANKE = "cn.zhuanke.zhuankeAPP";
     public static final String MUI_INSTALLER = "com.miui.packageinstaller";
@@ -44,6 +48,21 @@ public class AutoGetPacketService extends BaseAccessibilityService {
     public static final String WX_OPEN_RED_PACKAGE_VIEW_ID = "com.tencent.mm:id/c31";
     private long lastResumeTime;
     boolean click = false;
+    private boolean isSwiped = true;
+
+    private Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what) {
+                case QK_PACKAGE_NAME_VALUE:
+                    dispatchGesture(true,"小视频");
+                    isSwiped = true;
+                    handler.removeMessages(QK_PACKAGE_NAME_VALUE);
+                    break;
+            }
+        }
+    };
 
     @Override
     public void onAccessibilityEvent(AccessibilityEvent event) {
@@ -102,13 +121,8 @@ public class AutoGetPacketService extends BaseAccessibilityService {
                 }
                 break;
             case QK_PACKAGE_NAME:
-                try {
-                    int randomTime = getRandomNum(13, 30);
-                    Thread.sleep(randomTime * 1000);
-                    dispatchGesture(true,"小视频");
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
+                Log.e(TAG, "QK_PACKAGE_NAME isSwiped -- "+isSwiped+" hasMessages -- "+handler.hasMessages(QK_PACKAGE_NAME_VALUE));
+                swipeDelay(QK_PACKAGE_NAME_VALUE);
                 break;
                 default:
                     break;
@@ -144,6 +158,21 @@ public class AutoGetPacketService extends BaseAccessibilityService {
 //            dispatchGesture();
 ////            performScrollUp();
 //        }
+    }
+
+    private void swipeDelay(int what,int randomTime) {
+        if (isSwiped) {
+            isSwiped = false;
+            if (randomTime == 0) {
+                randomTime = getRandomNum(18, 32);
+            }
+            Log.e(TAG, "what: "+what+" randomTime: "+ randomTime);
+            handler.sendEmptyMessageDelayed(what,randomTime*1000);
+        }
+    }
+
+    private void swipeDelay(int what) {
+        swipeDelay(what,0);
     }
 
     private void autoForDDQW() {
