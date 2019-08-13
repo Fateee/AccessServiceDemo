@@ -3,6 +3,7 @@ package com.ps.accessservicedemo.other;
 import android.Manifest;
 import android.app.Application;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
@@ -10,6 +11,8 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.util.Log;
+
+import com.ps.accessservicedemo.DialogActivity;
 
 
 /**
@@ -79,7 +82,7 @@ public class MeetAndroidApplication extends Application {
         @Override
         public void onProviderDisabled(String s) {
             Log.e("huyi", "onProviderDisabled");
-
+            startActivity(new Intent(inst, DialogActivity.class));
         }
     };
 }
