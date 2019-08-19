@@ -12,7 +12,6 @@ import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 
-import com.alibaba.fastjson.JSON;
 import com.ps.accessservicedemo.DialogActivity;
 
 import java.util.HashMap;
@@ -40,14 +39,14 @@ public class MeetAndroidApplication extends Application {
         inst = this;
         init();
 //        startLocation();
-        addCommonParam();
+//        addCommonParam();
     }
     private void addCommonParam() {
         Map<String,String> mCommonParam = new HashMap<>();
         mCommonParam.put("url","aaaaa");
         mCommonParam.put("referrer","aaaaa");
         mCommonParam.putAll(this.mCommonParam);
-        sensor_param = JSON.toJSONString(mCommonParam);
+//        sensor_param = JSON.toJSONString(mCommonParam);
         Log.e("huyi", this.mCommonParam.toString());
     }
     private void init() {
