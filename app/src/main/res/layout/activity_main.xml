@@ -29,4 +29,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="赚客" />
+    <android.support.v7.widget.AppCompatButton
+        android:id="@+id/time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="随机时间" />
 </LinearLayout>

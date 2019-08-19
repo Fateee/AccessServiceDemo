@@ -20,9 +20,12 @@ import com.ps.accessservicedemo.other.SingletonManager;
 import com.ps.accessservicedemo.service.AutoGetPacketService;
 import com.ps.accessservicedemo.tools.CameraUtils;
 import com.ps.accessservicedemo.tools.PacketUtil;
+import com.ps.accessservicedemo.views.BrightDialog;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
+
+    private BrightDialog brightDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +40,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         findViewById(R.id.xiaoyumoney).setOnClickListener(this);
         findViewById(R.id.lingyongmoney).setOnClickListener(this);
         findViewById(R.id.zhuanke).setOnClickListener(this);
+        findViewById(R.id.time).setOnClickListener(this);
     }
 
 
@@ -54,6 +58,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.zhuanke:
                 PacketUtil.openAPP(AutoGetPacketService.ZHUANKE);
+                break;
+            case R.id.time:
+                if (brightDialog == null) {
+                    brightDialog = new BrightDialog(this);
+                    brightDialog.setCanceledOnTouchOutside(false);
+                } else {
+                    brightDialog.refreshBright();
+                }
+                brightDialog.show();
                 break;
             default:
                 break;

@@ -263,6 +263,23 @@ public class BaseAccessibilityService extends AccessibilityService
         return null;
     }
 
+    public boolean isButtonCheckedById(String viewId) {
+        AccessibilityNodeInfo rightRB = findViewByViewIdNoClick(viewId);
+        if (rightRB != null && rightRB.isChecked()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public boolean isButtonCheckedByText(String text) {
+        AccessibilityNodeInfo rightRB = findViewByText(text,true);
+        if (rightRB != null && rightRB.isChecked()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
     public AccessibilityNodeInfo findViewByViewId(AccessibilityNodeInfo accessibilityNodeInfo, String viewId) {
         if (accessibilityNodeInfo == null) {
             return null;

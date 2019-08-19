@@ -30,8 +30,10 @@ dependencies {
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
     //    implementation 'io.appium:java-client:7.1.0'
-//    implementation files('libs/java-client-4.1.2.jar')
+    //    implementation files('libs/java-client-4.1.2.jar')
     //    implementation 'org.openqa.selenium:selenium-rc:1.0-20081010.060147'
     //    implementation 'org.openqa.selenium.server:selenium-server:1.0-20081010.060147'
-//    implementation files('libs/selenium-server-standalone-3.0.1.jar')
+    //    implementation files('libs/selenium-server-standalone-3.0.1.jar')
+//    implementation 'com.alibaba:fastjson:1.2.59'
+    implementation 'com.white:easysp:1.0.0'
 }

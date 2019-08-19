@@ -12,7 +12,7 @@ import android.widget.Toast;
 import com.ps.accessservicedemo.MainActivity;
 import com.ps.accessservicedemo.other.MeetAndroidApplication;
 import com.ps.accessservicedemo.tools.PacketUtil;
-
+import com.white.easysp.EasySP;
 
 
 /**
@@ -28,6 +28,7 @@ public class AutoGetPacketService extends BaseAccessibilityService {
     public static final String QK_PACKAGE_NAME = "com.jifen.qukan";
     private static final int QK_PACKAGE_NAME_VALUE = 520;
     public static final String XYZQ = "com.xiaoyuzhuanqian";
+    private static final int XYZQ_PACKAGE_NAME_VALUE = 521;
     public static final String ZHUANKE = "cn.zhuanke.zhuankeAPP";
     public static final String MUI_INSTALLER = "com.miui.packageinstaller";
     public static final String MUI_securitycenter = "om.miui.securitycenter";
@@ -37,7 +38,7 @@ public class AutoGetPacketService extends BaseAccessibilityService {
     public static final String DDQW = "com.ddfun";
 
     public static final String DINGDING = "com.alibaba.android.rimet";
-
+    public static int defaultTime = 0;
     /**
      * text
      */
@@ -49,6 +50,7 @@ public class AutoGetPacketService extends BaseAccessibilityService {
     private long lastResumeTime;
     boolean click = false;
     private boolean isSwiped = true;
+    private boolean isRefreshed = true;
 
     private Handler handler = new Handler() {
         @Override
@@ -59,6 +61,10 @@ public class AutoGetPacketService extends BaseAccessibilityService {
                     dispatchGesture(true,"小视频");
                     isSwiped = true;
                     handler.removeMessages(QK_PACKAGE_NAME_VALUE);
+                case XYZQ_PACKAGE_NAME_VALUE:
+                    dispatchGesture(true,"短视频");
+                    isSwiped = true;
+                    handler.removeMessages(XYZQ_PACKAGE_NAME_VALUE);
                     break;
             }
         }
@@ -71,7 +77,7 @@ public class AutoGetPacketService extends BaseAccessibilityService {
         if (TextUtils.isEmpty(pkg)) return;
 //        if (click) return;
 //        try {
-//            Thread.sleep(10*1000);
+//            //Thread.sleep(10*1000);
 //        } catch (InterruptedException e) {
 //            e.printStackTrace();
 //        }
@@ -89,7 +95,7 @@ public class AutoGetPacketService extends BaseAccessibilityService {
                 autoForLYQ();
                 break;
             case XIAOZHUO:
-                autoForXiaozhuo();
+//                autoForXiaozhuo();
                 break;
             case DDQW:
                 autoForDDQW();
@@ -127,44 +133,17 @@ public class AutoGetPacketService extends BaseAccessibilityService {
                 default:
                     break;
         }
-
-
-
-//        while (true) {
-//            try {
-//                Thread.sleep(10*1000);
-//            } catch (InterruptedException e) {
-//                e.printStackTrace();
-//            }
-//            dispatchGesture();
-//        }
-//        if (event.getEventType() == AccessibilityEvent.TYPE_WINDOW_CONTENT_CHANGED
-//                && event.getPackageName().equals(WX_PACKAGE_NAME)) {
-//            AccessibilityNodeInfo viewByText = findViewByText(WX_RED_PACKAGE_TEXT);
-//            if (viewByText != null) {
-//                performViewClick(viewByText);
-//                clickTextViewByViewId(WX_OPEN_RED_PACKAGE_VIEW_ID);
-//            } else {
-//                AccessibilityNodeInfo viewByViewId = findViewByViewId("com.tencent.mm:id/apx");
-//                if (null != viewByViewId
-//                        && viewByViewId.getText().toString().contains(WX_RED_PACKAGE_TEXT)) {
-//                    performViewClick(viewByViewId);
-//                    clickTextViewByViewId(WX_OPEN_RED_PACKAGE_VIEW_ID);
-//                }
-//            }
-//        } else if (event.getEventType() == 4f
-//                && event.getPackageName().equals(SB_PACKAGE_NAME)) {
-//            Log.e(TAG, "event type:" + SB_PACKAGE_NAME);
-//            dispatchGesture();
-////            performScrollUp();
-//        }
     }
 
-    private void swipeDelay(int what,int randomTime) {
+    private void swipeDelay(int what,boolean exactly) {
         if (isSwiped) {
             isSwiped = false;
-            if (randomTime == 0) {
-                randomTime = getRandomNum(18, 32);
+            if (defaultTime == 0) {
+                defaultTime = EasySP.init(MeetAndroidApplication.getInstance()).getInt("time",18);
+            }
+            int randomTime = defaultTime;
+            if (!exactly){
+                randomTime = getRandomNum(defaultTime, defaultTime+14);
             }
             Log.e(TAG, "what: "+what+" randomTime: "+ randomTime);
             handler.sendEmptyMessageDelayed(what,randomTime*1000);
@@ -172,7 +151,7 @@ public class AutoGetPacketService extends BaseAccessibilityService {
     }
 
     private void swipeDelay(int what) {
-        swipeDelay(what,0);
+        swipeDelay(what,false);
     }
 
     private void autoForDDQW() {
@@ -188,7 +167,7 @@ public class AutoGetPacketService extends BaseAccessibilityService {
                 boolean success = yesBT.performAction(AccessibilityNodeInfo.ACTION_CLICK);
                 Log.i(TAG, "dou dou qu wan click success :" + success);
                 if (success) {
-                    delaySecond(16);
+//                    delaySecond(16);
 //                    Toast.makeText(AutoGetPacketService.this,"可以了..........",Toast.LENGTH_LONG).show();
                 }
             }
@@ -203,19 +182,19 @@ public class AutoGetPacketService extends BaseAccessibilityService {
                 AccessibilityNodeInfo startEveryDay = findViewByViewIdNoClick("com.xzzq.xiaozhuo:id/task_button_right");
                 if (startEveryDay != null) {
                     boolean startEveryDayBtOk = startEveryDay.performAction(AccessibilityNodeInfo.ACTION_CLICK);
-                    try {
-                        Thread.sleep(1*1000);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
+//                    try {
+//                        //Thread.sleep(1*1000);
+//                    } catch (InterruptedException e) {
+//                        e.printStackTrace();
+//                    }
                     AccessibilityNodeInfo okIKnow = findViewByViewIdNoClick("com.xzzq.xiaozhuo:id/task_guide_confirm_btn");
                     if (okIKnow != null) {
-                        try {
-                            Thread.sleep(4*1000);
-                            boolean okIKnowOk = okIKnow.performAction(AccessibilityNodeInfo.ACTION_CLICK);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
+//                        try {
+//                            //Thread.sleep(4*1000);
+//                            boolean okIKnowOk = okIKnow.performAction(AccessibilityNodeInfo.ACTION_CLICK);
+//                        } catch (InterruptedException e) {
+//                            e.printStackTrace();
+//                        }
                     }
                 }
 
@@ -251,7 +230,7 @@ public class AutoGetPacketService extends BaseAccessibilityService {
             CharSequence text = status.getText();
             if (!TextUtils.isEmpty(text)&& ("打开试玩".equals(text) || "去观看".equals(text))) {
                 boolean success = status.performAction(AccessibilityNodeInfo.ACTION_CLICK);
-                delaySecond(31);
+//                delaySecond(31);
                 AccessibilityNodeInfo closeAd = findViewByViewIdNoClick("com.xzzq.xiaozhuo:id/tt_video_ad_close");
                 if (closeAd != null) {
                     boolean closeAdSuccess = closeAd.performAction(AccessibilityNodeInfo.ACTION_CLICK);
@@ -265,11 +244,11 @@ public class AutoGetPacketService extends BaseAccessibilityService {
     }
 
     private void delaySecond(int count) {
-        try {
-            Thread.sleep(count*1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            //Thread.sleep(count*1000);
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
     }
 
     private void autoForLYQ() {
@@ -286,11 +265,11 @@ public class AutoGetPacketService extends BaseAccessibilityService {
                     if (success) break;
                 }
             }
-            try {
-                Thread.sleep(1*1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+//            try {
+//                //Thread.sleep(1*1000);
+//            } catch (InterruptedException e) {
+//                e.printStackTrace();
+//            }
         }
         AccessibilityNodeInfo downProgress = findViewByViewIdNoClick("cn.lingyongqian.stark:id/progress");
         if (downProgress != null) return;
@@ -312,12 +291,16 @@ public class AutoGetPacketService extends BaseAccessibilityService {
         if (launchBT != null) {
             boolean success = launchBT.performAction(AccessibilityNodeInfo.ACTION_CLICK);
             Log.i(TAG, "MUI_INSTALLER launchBT success :" + success);
-            try {
-                Thread.sleep(3*60*1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            performGlobalAction(GLOBAL_ACTION_BACK);
+//            try {
+//                //Thread.sleep(3*60*1000);
+//            } catch (InterruptedException e) {
+//                e.printStackTrace();
+//            }
+            handler.postDelayed(() -> {
+                performGlobalAction(GLOBAL_ACTION_BACK);
+                performGlobalAction(GLOBAL_ACTION_BACK);
+            },3*60*1000);
+
 //                performGlobalAction(GLOBAL_ACTION_BACK);
         }
     }
@@ -333,46 +316,41 @@ public class AutoGetPacketService extends BaseAccessibilityService {
     }
 
     private void autoForXyzq() {
-        AccessibilityNodeInfo task_list_rl = findViewByViewIdNoClick("com.xiaoyuzhuanqian:id/task_list_rl");
-        if (task_list_rl != null) {
-            Log.i(TAG, "task_list_rl :" + task_list_rl.toString());
-            Log.i(TAG, "count  :" + task_list_rl.getChildCount());
-            int count = task_list_rl.getChildCount();
-            for (int i = 0; i < count; i++) {
-                AccessibilityNodeInfo item = task_list_rl.getChild(i);
-                if (item != null) {
-                    Log.i(TAG, "item :" + item.toString()+" item count  :" + item.getChildCount());
-                    AccessibilityNodeInfo appStoreNameNode = findViewByViewId(item,"com.xiaoyuzhuanqian:id/appstore_name");
-                    if (appStoreNameNode != null) {
-                        CharSequence appStoreName = appStoreNameNode.getText();
-                        if (TextUtils.isEmpty(appStoreName)) return;
-                        Log.i(TAG, "list appStoreName :" + appStoreName);
-                        if (appStoreName.toString().contains("华为")) continue;
-                        boolean success = item.performAction(AccessibilityNodeInfo.ACTION_CLICK);
-                        if (success) break;
+        if (isButtonCheckedByText("短视频"))
+            swipeDelay(XYZQ_PACKAGE_NAME_VALUE,true);
+        else if (isButtonCheckedByText("任务赚") && isRefreshed) {
+            isRefreshed = false;
+            AccessibilityNodeInfo task_list_rl = findViewByViewIdNoClick("com.xiaoyuzhuanqian:id/task_list_rl");
+            if (task_list_rl != null && task_list_rl.getChildCount() > 0) {
+                Log.i(TAG, "task_list_rl :" + task_list_rl.toString());
+                Log.i(TAG, "count  :" + task_list_rl.getChildCount());
+                int count = task_list_rl.getChildCount();
+                for (int i = 0; i < count; i++) {
+                    AccessibilityNodeInfo item = task_list_rl.getChild(i);
+                    if (item != null) {
+                        Log.i(TAG, "item :" + item.toString() + " item count  :" + item.getChildCount());
+                        AccessibilityNodeInfo appStoreNameNode = findViewByViewId(item, "com.xiaoyuzhuanqian:id/appstore_name");
+                        if (appStoreNameNode != null) {
+                            CharSequence appStoreName = appStoreNameNode.getText();
+                            if (TextUtils.isEmpty(appStoreName)) return;
+                            Log.i(TAG, "list appStoreName :" + appStoreName);
+//                            if (appStoreName.toString().contains("华为")) continue;
+                            boolean success = item.performAction(AccessibilityNodeInfo.ACTION_CLICK);
+                            if (success) break;
+                        }
                     }
                 }
-            }
-            try {
-                Thread.sleep(2*1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            AccessibilityNodeInfo begin_get_money_btn = findViewByViewIdNoClick("com.xiaoyuzhuanqian:id/begin_get_money_btn");
-            if (begin_get_money_btn != null) {
-                boolean success = begin_get_money_btn.performAction(AccessibilityNodeInfo.ACTION_CLICK);
-            }
-        } else {
-            if (lastResumeTime == 0L) {
-                lastResumeTime = System.currentTimeMillis();
-                return;
-            }
-            long now = System.currentTimeMillis();
-            Log.d(TAG, "resume now = "+now+" lastResumeTime = "+lastResumeTime+" offset "+(now-lastResumeTime));
-            if (now-lastResumeTime >10*1000) {
-                Log.d(TAG, "dispatchGesture");
-                lastResumeTime = System.currentTimeMillis();
-                dispatchGesture(true);
+                handler.postDelayed(() -> {
+                    AccessibilityNodeInfo begin_get_money_btn = findViewByViewIdNoClick("com.xiaoyuzhuanqian:id/begin_get_money_btn");
+                    if (begin_get_money_btn != null) {
+                        boolean success = begin_get_money_btn.performAction(AccessibilityNodeInfo.ACTION_CLICK);
+                    }
+                }, 2 * 1000);
+            } else {
+                handler.postDelayed(() -> {
+                    dispatchGesture(false,"任务赚");
+                    isRefreshed = true;
+                }, 28 * 1000);
             }
         }
     }
