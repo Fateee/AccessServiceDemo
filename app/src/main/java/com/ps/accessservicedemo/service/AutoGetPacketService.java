@@ -24,6 +24,7 @@ public class AutoGetPacketService extends BaseAccessibilityService {
      * wx包名
      */
     public static final String WX_PACKAGE_NAME = "com.tencent.mm";
+    public static final String KS_PACKAGE_NAME = "com.kuaishou.nebula";
     public static final String SB_PACKAGE_NAME = "com.jm.video";
     public static final String QK_PACKAGE_NAME = "com.jifen.qukan";
     private static final int QK_PACKAGE_NAME_VALUE = 520;
@@ -111,6 +112,7 @@ public class AutoGetPacketService extends BaseAccessibilityService {
             case MUI_INSTALLER:
                 autoInstall();
                 break;
+            case KS_PACKAGE_NAME:
             case SB_PACKAGE_NAME:
                 if (event.getEventType() == AccessibilityEvent.TYPE_VIEW_SELECTED) {
                     if (lastResumeTime == 0L) {
