@@ -6,12 +6,19 @@
     android:layout_height="match_parent"
     android:gravity="center"
     android:orientation="vertical">
-
+    <android.support.v7.widget.SwitchCompat
+        android:id="@+id/auto_random_play"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        app:switchPadding="10dp"
+        android:text="自动上滑开关"/>
     <android.support.v7.widget.AppCompatButton
         android:id="@+id/openAccess"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:layout_marginTop="10dp"
         android:padding="10dp"
         android:text="@string/lbl_open_access" />
     <android.support.v7.widget.AppCompatButton
@@ -23,12 +30,12 @@
         android:id="@+id/lingyongmoney"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="零用钱" />
+        android:text="快手" />
     <android.support.v7.widget.AppCompatButton
         android:id="@+id/zhuanke"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="赚客" />
+        android:text="趣头条" />
     <android.support.v7.widget.AppCompatButton
         android:id="@+id/time"
         android:layout_width="wrap_content"

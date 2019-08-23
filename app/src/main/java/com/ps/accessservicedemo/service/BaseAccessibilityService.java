@@ -274,7 +274,7 @@ public class BaseAccessibilityService extends AccessibilityService
 
     public boolean isButtonCheckedByText(String text) {
         AccessibilityNodeInfo rightRB = findViewByText(text,true);
-        if (rightRB != null && rightRB.isChecked()) {
+        if (rightRB != null && (rightRB.isChecked()||rightRB.isSelected())) {
             return true;
         } else {
             return false;

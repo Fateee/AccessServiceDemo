@@ -9,6 +9,7 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.ps.accessservicedemo.R;
+import com.ps.accessservicedemo.io.Consts;
 import com.ps.accessservicedemo.other.MeetAndroidApplication;
 import com.ps.accessservicedemo.service.AutoGetPacketService;
 import com.white.easysp.EasySP;
@@ -40,7 +41,7 @@ public class BrightDialog extends Dialog {
      * 刷新亮度
      */
     public void refreshBright() {
-        defaultTime = AutoGetPacketService.defaultTime;
+        defaultTime = EasySP.init(MeetAndroidApplication.getInstance()).getInt(Consts.TIME_SET,18);
         brightnessTv.setText(String.valueOf(defaultTime));
         seekBar.setProgress(defaultTime);
     }
@@ -79,7 +80,7 @@ public class BrightDialog extends Dialog {
             @Override
             public void onClick(View v) {
                 AutoGetPacketService.defaultTime = seekBar.getProgress();
-                EasySP.init(MeetAndroidApplication.getInstance()).putInt("time",AutoGetPacketService.defaultTime);
+                EasySP.init(MeetAndroidApplication.getInstance()).putInt(Consts.TIME_SET,AutoGetPacketService.defaultTime);
                 dismiss();
             }
         });
