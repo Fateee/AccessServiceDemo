@@ -159,22 +159,25 @@ public class BaseAccessibilityService extends AccessibilityService
 
     public void click(AccessibilityNodeInfo paramAccessibilityNodeInfo, String name) {
         if (paramAccessibilityNodeInfo == null) return;
-        if (name.equals(paramAccessibilityNodeInfo.getText())) {
-            if (paramAccessibilityNodeInfo.isClickable()) {
-                paramAccessibilityNodeInfo.performAction(AccessibilityNodeInfo.ACTION_CLICK);
-            } else {
-                AccessibilityNodeInfo accessibilityNodeInfo1 = paramAccessibilityNodeInfo.getParent();
-                AccessibilityNodeInfo accessibilityNodeInfo2 = accessibilityNodeInfo1.getParent();
-                Log.e("QiangHongBao", "--parent widget------------" + accessibilityNodeInfo1.getClassName());
-                Log.e("QiangHongBao", "--parent1 widget------------" + accessibilityNodeInfo2.getClassName());
-                if (accessibilityNodeInfo1.getClassName().equals("android.widget.RelativeLayout") && accessibilityNodeInfo1.isClickable()) {
-                    Log.e("QiangHongBao", "-- widget------------" + paramAccessibilityNodeInfo.getChildCount());
-                    accessibilityNodeInfo1.performAction(AccessibilityNodeInfo.ACTION_CLICK);
+        CharSequence text = paramAccessibilityNodeInfo.getText();
+        if (!TextUtils.isEmpty(text)) {
+            if (name.equalsIgnoreCase(text.toString())) {
+                if (paramAccessibilityNodeInfo.isClickable()) {
+                    paramAccessibilityNodeInfo.performAction(AccessibilityNodeInfo.ACTION_CLICK);
+                } else {
+                    AccessibilityNodeInfo accessibilityNodeInfo1 = paramAccessibilityNodeInfo.getParent();
+                    AccessibilityNodeInfo accessibilityNodeInfo2 = accessibilityNodeInfo1.getParent();
+                    Log.e("QiangHongBao", "--parent widget------------" + accessibilityNodeInfo1.getClassName());
+                    Log.e("QiangHongBao", "--parent1 widget------------" + accessibilityNodeInfo2.getClassName());
+                    if (accessibilityNodeInfo1.getClassName().equals("android.widget.RelativeLayout") && accessibilityNodeInfo1.isClickable()) {
+                        Log.e("QiangHongBao", "-- widget------------" + paramAccessibilityNodeInfo.getChildCount());
+                        accessibilityNodeInfo1.performAction(AccessibilityNodeInfo.ACTION_CLICK);
+                    }
                 }
-            }
 
-            Log.e("QiangHongBao", "--text widget----------------------------" + paramAccessibilityNodeInfo.getText());
-            return;
+                Log.e("QiangHongBao", "--text widget----------------------------" + paramAccessibilityNodeInfo.getText());
+                return;
+            }
         }
         for (byte b1 = 0; b1 < paramAccessibilityNodeInfo.getChildCount(); b1++) {
             if (paramAccessibilityNodeInfo.getChild(b1) != null)
