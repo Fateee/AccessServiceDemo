@@ -17,6 +17,7 @@ import com.white.easysp.EasySP;
 
 import static com.ps.accessservicedemo.io.Consts.AUTO_RANDOM_PLAY;
 import static com.ps.accessservicedemo.io.Consts.DDQW;
+import static com.ps.accessservicedemo.io.Consts.HSJS;
 import static com.ps.accessservicedemo.io.Consts.LYQ;
 import static com.ps.accessservicedemo.io.Consts.MUI_INSTALLER;
 import static com.ps.accessservicedemo.io.Consts.MUI_security_MUI;
@@ -152,6 +153,12 @@ public class AutoGetPacketService extends BaseAccessibilityService {
                     startVideo = true;
                     swipeDelay(QK_PACKAGE_NAME_VALUE);
                 }
+                break;
+            case HSJS:
+//                AccessibilityNodeInfo bt = findViewByRealTextInList("领100金币");
+//                if (bt != null) {
+//                    bt.performAction(AccessibilityNodeInfo.ACTION_CLICK);
+//                }
                 break;
                 default:
                     if (!startVideo && EasySP.init(MeetAndroidApplication.getInstance()).getBoolean(Consts.AUTO_PLAY,false)) {

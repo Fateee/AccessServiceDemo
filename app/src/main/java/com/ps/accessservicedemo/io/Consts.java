@@ -18,7 +18,7 @@ public class Consts {
     public static final String XIAOZHUO = "com.xzzq.xiaozhuo";
     public static final String DDQW = "com.ddfun";
     public static final String DINGDING = "com.alibaba.android.rimet";
-
+    public static final String HSJS = "com.ss.android.ugc.livelite";
     public static final String XYZQ = "com.xiaoyuzhuanqian";
     public static final int QK_PACKAGE_NAME_VALUE = 520;
     public static final int XYZQ_PACKAGE_NAME_VALUE = 521;

@@ -284,7 +284,7 @@ public class BaseAccessibilityService extends AccessibilityService
         }
     }
 
-    private AccessibilityNodeInfo findViewByRealText(String text) {
+    public AccessibilityNodeInfo findViewByRealText(String text) {
         AccessibilityNodeInfo accessibilityNodeInfo = getRootInActiveWindow();
         if (accessibilityNodeInfo == null) {
             return null;
@@ -301,6 +301,23 @@ public class BaseAccessibilityService extends AccessibilityService
         return null;
     }
 
+    public AccessibilityNodeInfo findViewByRealTextInList(String text) {
+        AccessibilityNodeInfo accessibilityNodeInfo = getRootInActiveWindow();
+        if (accessibilityNodeInfo == null) {
+            return null;
+        }
+        click(accessibilityNodeInfo,text);
+//        List<AccessibilityNodeInfo> nodeInfoList =
+//                accessibilityNodeInfo.findAccessibilityNodeInfosByText(text);
+//        if (nodeInfoList != null && !nodeInfoList.isEmpty()) {
+//            for (AccessibilityNodeInfo nodeInfo : nodeInfoList) {
+//                if (nodeInfo != null && !TextUtils.isEmpty(nodeInfo.getText()) && text.equalsIgnoreCase(nodeInfo.getText().toString())) {
+//                    return nodeInfo;
+//                }
+//            }
+//        }
+        return null;
+    }
     public AccessibilityNodeInfo findViewByViewId(AccessibilityNodeInfo accessibilityNodeInfo, String viewId) {
         if (accessibilityNodeInfo == null) {
             return null;

@@ -27,6 +27,8 @@ import com.ps.accessservicedemo.tools.PacketUtil;
 import com.ps.accessservicedemo.views.BrightDialog;
 import com.white.easysp.EasySP;
 
+import showapplist.AppsActivity;
+
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
 
@@ -52,6 +54,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         findViewById(R.id.lingyongmoney).setOnClickListener(this);
         findViewById(R.id.zhuanke).setOnClickListener(this);
         findViewById(R.id.time).setOnClickListener(this);
+        findViewById(R.id.app_list).setOnClickListener(this);
     }
 
 
@@ -78,6 +81,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     brightDialog.refreshBright();
                 }
                 brightDialog.show();
+                break;
+            case R.id.app_list:
+                startActivity(new Intent(this, AppsActivity.class));
                 break;
             default:
                 break;
