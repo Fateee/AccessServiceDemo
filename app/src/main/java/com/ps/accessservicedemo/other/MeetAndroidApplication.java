@@ -13,6 +13,7 @@ import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 
 import com.ps.accessservicedemo.DialogActivity;
+import com.ps.accessservicedemo.service.BaseAccessibilityService;
 
 import java.util.HashMap;
 import java.util.Map;

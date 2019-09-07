@@ -50,7 +50,7 @@
         android:layout_below="@id/brightness_ll"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="40dp"
-        android:max="255" />
+        android:max="180" />
 
 
     <TextView
@@ -62,7 +62,7 @@
         android:layout_marginTop="40dp"
         android:gravity="center"
         android:paddingRight="10dp"
-        android:text="255"
+        android:text="180"
         android:textColor="#333333"
         android:textSize="16sp" />
 
@@ -72,6 +72,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/brightness_seekbar"
         android:layout_centerHorizontal="true"
+        android:padding="15dp"
         android:layout_marginBottom="10dp"
         android:layout_marginTop="10dp"
         android:background="@drawable/default_detect_btn_bg"

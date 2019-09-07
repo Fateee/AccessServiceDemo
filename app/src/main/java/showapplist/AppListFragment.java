@@ -41,27 +41,27 @@ public class AppListFragment extends ListFragment {
 	@Override
 	public void onListItemClick(ListView l, View v, int position, long id) {
 		//
-//		Intent appIntent = appList.get(position).appIntent;
-//		if (appIntent != null) {
-//			startActivity(appIntent);
-//		} else {
-//			Toast toast = Toast.makeText(getActivity(),"Intent is null", Toast.LENGTH_SHORT);
-//			toast.show();
-//		}
-		String pkgName = appList.get(position).pkgName;
-		AlertDialog dialog = new AlertDialog.Builder(getActivity()).setMessage("确定要卸载改应用？").setPositiveButton("确定", new DialogInterface.OnClickListener() {
-			@Override
-			public void onClick(DialogInterface dialogInterface, int i) {
-//				MyProcess.getInstance().get_photo_name(" pm uninstall -k --user 0 "+pkgName);
-				MyProcess.getInstance().runShellCommand(" pm uninstall -k --user 0 "+pkgName);
-			}
-		}).setNegativeButton("取消", new DialogInterface.OnClickListener() {
-			@Override
-			public void onClick(DialogInterface dialogInterface, int i) {
-
-			}
-		}).create();
-		dialog.show();
+		Intent appIntent = appList.get(position).appIntent;
+		if (appIntent != null) {
+			startActivity(appIntent);
+		} else {
+			Toast toast = Toast.makeText(getActivity(),"Intent is null", Toast.LENGTH_SHORT);
+			toast.show();
+		}
+//		String pkgName = appList.get(position).pkgName;
+//		AlertDialog dialog = new AlertDialog.Builder(getActivity()).setMessage("确定要卸载改应用？").setPositiveButton("确定", new DialogInterface.OnClickListener() {
+//			@Override
+//			public void onClick(DialogInterface dialogInterface, int i) {
+////				MyProcess.getInstance().get_photo_name(" pm uninstall -k --user 0 "+pkgName);
+//				MyProcess.getInstance().runShellCommand(" pm uninstall -k --user 0 "+pkgName);
+//			}
+//		}).setNegativeButton("取消", new DialogInterface.OnClickListener() {
+//			@Override
+//			public void onClick(DialogInterface dialogInterface, int i) {
+//
+//			}
+//		}).create();
+//		dialog.show();
 	}
 	
 	/**
@@ -73,27 +73,27 @@ public class AppListFragment extends ListFragment {
 		List<PackageInfo> packages = pm.getInstalledPackages(0);
 		for (PackageInfo packageInfo : packages) {
 			//
-//			if ((packageInfo.applicationInfo.flags & ApplicationInfo.FLAG_SYSTEM) == 0)	// ��ϵͳӦ��
-//			{
-//				AppInfo info = new AppInfo();
-//				info.appName = packageInfo.applicationInfo.loadLabel(pm)
-//						.toString();
-//				info.pkgName = packageInfo.packageName;
-//				info.appIcon = packageInfo.applicationInfo.loadIcon(pm);
-//				//
-//				info.appIntent = pm.getLaunchIntentForPackage(packageInfo.packageName);
-//				appList.add(info);
-//			} else {
-//				//
-//			}
-			AppInfo info = new AppInfo();
-			info.appName = packageInfo.applicationInfo.loadLabel(pm)
-					.toString();
-			info.pkgName = packageInfo.packageName;
-			info.appIcon = packageInfo.applicationInfo.loadIcon(pm);
-			//
-			info.appIntent = pm.getLaunchIntentForPackage(packageInfo.packageName);
-			appList.add(info);
+			if ((packageInfo.applicationInfo.flags & ApplicationInfo.FLAG_SYSTEM) == 0)	// ��ϵͳӦ��
+			{
+				AppInfo info = new AppInfo();
+				info.appName = packageInfo.applicationInfo.loadLabel(pm)
+						.toString();
+				info.pkgName = packageInfo.packageName;
+				info.appIcon = packageInfo.applicationInfo.loadIcon(pm);
+				//
+				info.appIntent = pm.getLaunchIntentForPackage(packageInfo.packageName);
+				appList.add(info);
+			} else {
+				//
+			}
+//			AppInfo info = new AppInfo();
+//			info.appName = packageInfo.applicationInfo.loadLabel(pm)
+//					.toString();
+//			info.pkgName = packageInfo.packageName;
+//			info.appIcon = packageInfo.applicationInfo.loadIcon(pm);
+//			//
+//			info.appIntent = pm.getLaunchIntentForPackage(packageInfo.packageName);
+//			appList.add(info);
 		}
 	}
 }

@@ -20,6 +20,11 @@ public class Consts {
     public static final String DINGDING = "com.alibaba.android.rimet";
     public static final String HSJS = "com.ss.android.ugc.livelite";
     public static final String XYZQ = "com.xiaoyuzhuanqian";
+
+    public static final String HBSP = "com.sanmiao.sound";
+    //快看点
+    public static final String KKD = "com.yuncheapp.android.pearl";
+
     public static final int QK_PACKAGE_NAME_VALUE = 520;
     public static final int XYZQ_PACKAGE_NAME_VALUE = 521;
     public static final int SWIPE_VALUE = 522;

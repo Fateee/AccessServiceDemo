@@ -12,11 +12,13 @@ import android.widget.Toast;
 import com.ps.accessservicedemo.MainActivity;
 import com.ps.accessservicedemo.io.Consts;
 import com.ps.accessservicedemo.other.MeetAndroidApplication;
+import com.ps.accessservicedemo.tools.ForegroundAppUtil;
 import com.ps.accessservicedemo.tools.PacketUtil;
 import com.white.easysp.EasySP;
 
 import static com.ps.accessservicedemo.io.Consts.AUTO_RANDOM_PLAY;
 import static com.ps.accessservicedemo.io.Consts.DDQW;
+import static com.ps.accessservicedemo.io.Consts.HBSP;
 import static com.ps.accessservicedemo.io.Consts.HSJS;
 import static com.ps.accessservicedemo.io.Consts.LYQ;
 import static com.ps.accessservicedemo.io.Consts.MUI_INSTALLER;
@@ -51,7 +53,9 @@ public class AutoGetPacketService extends BaseAccessibilityService {
     private boolean isSwiped = true;
     boolean startVideo = false;
     private boolean isRefreshed = true;
+    private Runnable autoSwipeRunable = () -> swipeDelay(AUTO_RANDOM_PLAY);
     private Handler handler = new Handler() {
+
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
@@ -91,7 +95,7 @@ public class AutoGetPacketService extends BaseAccessibilityService {
                     dispatchGesture(true,"小视频");
                     isSwiped = true;
                     if (EasySP.init(MeetAndroidApplication.getInstance()).getBoolean(Consts.AUTO_PLAY,false)) {
-                        swipeDelay(AUTO_RANDOM_PLAY);
+                        postDelayed(autoSwipeRunable,2000);
                     } else {
                         startVideo = false;
                     }
@@ -105,6 +109,7 @@ public class AutoGetPacketService extends BaseAccessibilityService {
         CharSequence pkg = event.getPackageName();
         Log.i(TAG, "event pkg:" + pkg+" event type:" + event.getEventType());
         if (TextUtils.isEmpty(pkg)) return;
+        if (pkg.equals("com.ps.accessservicedemo")) return;
         switch (pkg.toString()) {
             case XYZQ:
                 autoForXyzq();
@@ -178,7 +183,7 @@ public class AutoGetPacketService extends BaseAccessibilityService {
             }
             int randomTime = defaultTime;
             if (!exactly){
-                randomTime = getRandomNum(defaultTime, defaultTime+14);
+                randomTime = getRandomNum(defaultTime, defaultTime+15);
             }
             Log.e(TAG, "what: "+what+" randomTime: "+ randomTime);
             if (hasAd(what)) {
@@ -195,23 +200,35 @@ public class AutoGetPacketService extends BaseAccessibilityService {
 
     public boolean hasAd(int what) {
         AccessibilityNodeInfo ad = null;
-        switch (what) {
-            case QK_PACKAGE_NAME_VALUE:
+        String nowPkg = ForegroundAppUtil.getForegroundActivityName(MeetAndroidApplication.getInstance());
+        switch (nowPkg) {
+            case QK_PACKAGE_NAME:
                 ad = findViewByViewIdNoClick("com.jifen.qukan:id/af8");
                 if (ad != null) {
                     return true;
                 }
                 break;
-            case XYZQ_PACKAGE_NAME_VALUE:
+            case XYZQ:
                 ad = findViewByViewIdNoClick("com.xiaoyuzhuanqian:id/title");
+                if (ad != null) {
+                    CharSequence title = ad.getText();
+                    if (TextUtils.isEmpty(title)) return false;
+                    if (title.toString().contains("广告")) {
+                        return true;
+                    }
+                }
                 break;
-        }
-        if (ad != null) {
-            CharSequence title = ad.getText();
-            if (TextUtils.isEmpty(title)) return false;
-            if (title.toString().contains("广告")) {
-                return true;
-            }
+            case HBSP:
+                ad = findViewByViewIdNoClick("com.sanmiao.sound:id/tt_video_ad_close_layout");
+                if (ad != null && ad.isClickable()) {
+                    ad.performAction(AccessibilityNodeInfo.ACTION_CLICK);
+                    return false;
+                }
+                ad = findViewByViewIdNoClick("com.sanmiao.sound:id/ad_container");
+                if (ad != null) {
+                    return true;
+                }
+                break;
         }
         return false;
     }

@@ -52,7 +52,7 @@ public class BaseAccessibilityService extends AccessibilityService
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.e(TAG, "onStartCommand=");
-        return super.onStartCommand(intent, flags, startId);
+        return START_STICKY;
     }
 
     @Override
@@ -108,20 +108,24 @@ public class BaseAccessibilityService extends AccessibilityService
 //    y2 = int(l[1] * random_y2 * 0.1)  # 终点y坐标
 //            x2 = x1+random_x2
     public void dispatchGesture(boolean up, String name) {
-        int random_x1 = getRandomNum(1, 9);
-        int random_y1 = getRandomNum(8, 10);
-        int random_x2 = getRandomNum(1, 10);
-        int random_y2 = getRandomNum(1, 3);
+//        int random_x1 = getRandomNum(2, 9);
+//        int random_y1 = getRandomNum(8, 10);
+//        int random_x2 = getRandomNum(2, 10);
+//        int random_y2 = getRandomNum(1, 3);
+        double random_x1 = getRandomDouble(0.20, 0.85);
+        double random_y1 = getRandomDouble(0.78, 0.95);
+        double random_x2 = getRandomDouble(0.28, 0.9);
+        double random_y2 = getRandomDouble(0.08, 0.20);
         Log.e(TAG, "dispatchGesture  " + random_x1 + "  " + random_y1 + "  " + random_x2 + " " + random_y2);
         if (CameraUtils.realWidth == 0 || CameraUtils.realHeight == 0) {
             CameraUtils.getPingMuSize(MeetAndroidApplication.getInstance());
         }
-        double x1 = CameraUtils.realWidth * random_x1 * 0.1;
-        double y1 = CameraUtils.realHeight * random_y1 * 0.1;
-        double controlx = getRandomNum(1, 180) + x1;
-        double controly = y1 - getRandomNum(1, 300);
-        double x2 = CameraUtils.realWidth * random_x2 * 0.1;
-        double y2 = CameraUtils.realHeight * random_y2 * 0.1;
+        double x1 = CameraUtils.realWidth * random_x1;
+        double y1 = CameraUtils.realHeight * random_y1;
+        double controlx = getRandomNum(100, 180) + x1;
+        double controly = y1 - getRandomNum(100, 300);
+        double x2 = CameraUtils.realWidth * random_x2;
+        double y2 = CameraUtils.realHeight * random_y2;
         if (up) {
             path.moveTo((float) x1, (float) y1);
             path.quadTo((float) controlx, (float) controly, (float) x2, (float) y2);
@@ -134,7 +138,8 @@ public class BaseAccessibilityService extends AccessibilityService
         Log.e(TAG, "dispatchGesture x1 = " + x1 + " y1 = " + y1 + " controlx = " + controlx + " controly = " + controly + " x2 = " + x2 + " y2 = " + y2);
 
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
-            int random_time = getRandomNum(800, 910);
+            int random_time = getRandomNum(400, 800);
+            Log.e(TAG, "random_time  " + random_time );
             if (sd == null) {
                 sd = new GestureDescription.StrokeDescription(path, 0, random_time);
             }
@@ -411,6 +416,15 @@ public class BaseAccessibilityService extends AccessibilityService
             return random.nextInt(endNum - startNum) + startNum;
         }
         return 0;
+    }
+
+    public static double getRandomDouble(double min, double max) {
+//        double min = 0.1;//最小值
+//        double max = 10;//总和
+        int scl = 2;//小数最大位数
+        int pow = (int) Math.pow(10, scl);//指定小数位
+        double one = Math.floor((Math.random() * (max - min) + min) * pow) / pow;
+        return one;
     }
 
     public String getTopActivity() {
