@@ -30,4 +30,8 @@ public class Consts {
     public static final int SWIPE_VALUE = 522;
     public static final int AUTO_RANDOM_PLAY = 902;
 
+
+    //关注 赞
+    public static final String sb_follow = "com.jm.video:id/attention";
+    public static final String sb_praise = "com.jm.video:id/praise";
 }

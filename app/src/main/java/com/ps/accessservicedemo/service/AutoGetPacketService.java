@@ -54,6 +54,20 @@ public class AutoGetPacketService extends BaseAccessibilityService {
     boolean startVideo = false;
     private boolean isRefreshed = true;
     private Runnable autoSwipeRunable = () -> swipeDelay(AUTO_RANDOM_PLAY);
+
+    public class ClickRunable implements Runnable {
+        public String id;
+
+        @Override
+        public void run() {
+            AccessibilityNodeInfo node = findViewByViewId(id);
+            performViewClick(node);
+        }
+    }
+
+    private ClickRunable followBtRunable = new ClickRunable();
+    private ClickRunable praiseBtRunable = new ClickRunable();
+
     private Handler handler = new Handler() {
 
         @Override
@@ -149,6 +163,7 @@ public class AutoGetPacketService extends BaseAccessibilityService {
                         Log.d(TAG, "dispatchGesture");
                         lastResumeTime = System.currentTimeMillis();
                         dispatchGesture(true,"首页");
+                        followAndPraise(Consts.sb_follow,Consts.sb_praise);
                     }
                 }
                 break;
@@ -171,6 +186,25 @@ public class AutoGetPacketService extends BaseAccessibilityService {
                         swipeDelay(AUTO_RANDOM_PLAY);
                     }
                     break;
+        }
+    }
+
+    private void followAndPraise(String followId,String praiseId) {
+        handler.removeCallbacks(followBtRunable);
+        handler.removeCallbacks(praiseBtRunable);
+        int randomFollow = getRandomNum(0,10);
+        if (randomFollow > 6) {
+            followBtRunable.id = followId;
+            int actionDelay = getRandomNum(2, 9);
+            Log.e(TAG,"randomFollow == "+randomFollow+" actionDelay == "+actionDelay);
+            handler.postDelayed(followBtRunable,actionDelay*1000);
+        }
+        int randomPraise = getRandomNum(0,10);
+        if (randomPraise > 4) {
+            praiseBtRunable.id = praiseId;
+            int actionDelay = getRandomNum(2, 9);
+            Log.e(TAG,"randomPraise == "+randomPraise+" actionDelay == "+actionDelay);
+            handler.postDelayed(praiseBtRunable,actionDelay*1000);
         }
     }
 
