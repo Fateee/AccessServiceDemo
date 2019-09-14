@@ -272,43 +272,43 @@ public class AutoGetPacketService extends BaseAccessibilityService {
             startVideo = true;
             swipeDelay(XYZQ_PACKAGE_NAME_VALUE,true);
         }
-        else if (isRefreshed && isButtonCheckedByText("任务赚")) {
-            handler.removeCallbacksAndMessages(null);
-            isRefreshed = false;
-            startVideo = false;
-            AccessibilityNodeInfo task_list_rl = findViewByViewIdNoClick("com.xiaoyuzhuanqian:id/task_list_rl");
-            if (task_list_rl != null && task_list_rl.getChildCount() > 0) {
-                Log.i(TAG, "task_list_rl :" + task_list_rl.toString());
-                Log.i(TAG, "count  :" + task_list_rl.getChildCount());
-                int count = task_list_rl.getChildCount();
-                for (int i = 0; i < count; i++) {
-                    AccessibilityNodeInfo item = task_list_rl.getChild(i);
-                    if (item != null) {
-                        Log.i(TAG, "item :" + item.toString() + " item count  :" + item.getChildCount());
-                        AccessibilityNodeInfo appStoreNameNode = findViewByViewId(item, "com.xiaoyuzhuanqian:id/appstore_name");
-                        if (appStoreNameNode != null) {
-                            CharSequence appStoreName = appStoreNameNode.getText();
-                            if (TextUtils.isEmpty(appStoreName)) return;
-                            Log.i(TAG, "list appStoreName :" + appStoreName);
-//                            if (appStoreName.toString().contains("华为")) continue;
-                            boolean success = item.performAction(AccessibilityNodeInfo.ACTION_CLICK);
-                            if (success) break;
-                        }
-                    }
-                }
-                handler.postDelayed(() -> {
-                    AccessibilityNodeInfo begin_get_money_btn = findViewByViewIdNoClick("com.xiaoyuzhuanqian:id/begin_get_money_btn");
-                    if (begin_get_money_btn != null) {
-                        boolean success = begin_get_money_btn.performAction(AccessibilityNodeInfo.ACTION_CLICK);
-                    }
-                }, 2 * 1000);
-            } else {
-                handler.postDelayed(() -> {
-                    dispatchGesture(false,"任务赚");
-                    isRefreshed = true;
-                }, 28 * 1000);
-            }
-        }
+//        else if (isRefreshed && isButtonCheckedByText("任务赚")) {
+//            handler.removeCallbacksAndMessages(null);
+//            isRefreshed = false;
+//            startVideo = false;
+//            AccessibilityNodeInfo task_list_rl = findViewByViewIdNoClick("com.xiaoyuzhuanqian:id/task_list_rl");
+//            if (task_list_rl != null && task_list_rl.getChildCount() > 0) {
+//                Log.i(TAG, "task_list_rl :" + task_list_rl.toString());
+//                Log.i(TAG, "count  :" + task_list_rl.getChildCount());
+//                int count = task_list_rl.getChildCount();
+//                for (int i = 0; i < count; i++) {
+//                    AccessibilityNodeInfo item = task_list_rl.getChild(i);
+//                    if (item != null) {
+//                        Log.i(TAG, "item :" + item.toString() + " item count  :" + item.getChildCount());
+//                        AccessibilityNodeInfo appStoreNameNode = findViewByViewId(item, "com.xiaoyuzhuanqian:id/appstore_name");
+//                        if (appStoreNameNode != null) {
+//                            CharSequence appStoreName = appStoreNameNode.getText();
+//                            if (TextUtils.isEmpty(appStoreName)) return;
+//                            Log.i(TAG, "list appStoreName :" + appStoreName);
+////                            if (appStoreName.toString().contains("华为")) continue;
+//                            boolean success = item.performAction(AccessibilityNodeInfo.ACTION_CLICK);
+//                            if (success) break;
+//                        }
+//                    }
+//                }
+//                handler.postDelayed(() -> {
+//                    AccessibilityNodeInfo begin_get_money_btn = findViewByViewIdNoClick("com.xiaoyuzhuanqian:id/begin_get_money_btn");
+//                    if (begin_get_money_btn != null) {
+//                        boolean success = begin_get_money_btn.performAction(AccessibilityNodeInfo.ACTION_CLICK);
+//                    }
+//                }, 2 * 1000);
+//            } else {
+//                handler.postDelayed(() -> {
+//                    dispatchGesture(false,"任务赚");
+//                    isRefreshed = true;
+//                }, 28 * 1000);
+//            }
+//        }
     }
 
 
