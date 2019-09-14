@@ -112,8 +112,8 @@ public class BaseAccessibilityService extends AccessibilityService
 //        int random_y1 = getRandomNum(8, 10);
 //        int random_x2 = getRandomNum(2, 10);
 //        int random_y2 = getRandomNum(1, 3);
-        double random_x1 = getRandomDouble(0.30, 0.75);
-        double random_y1 = getRandomDouble(0.75, 0.88);
+        double random_x1 = getRandomDouble(0.33, 0.75);
+        double random_y1 = getRandomDouble(0.75, 0.85);
         double random_x2 = getRandomDouble(0.35, 0.80);
         double random_y2 = getRandomDouble(0.05, 0.18);
         Log.e(TAG, "dispatchGesture  " + random_x1 + "  " + random_y1 + "  " + random_x2 + " " + random_y2);
