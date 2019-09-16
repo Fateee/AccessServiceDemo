@@ -109,7 +109,7 @@ public class AutoGetPacketService extends BaseAccessibilityService {
                     dispatchGesture(true,"小视频");
                     isSwiped = true;
                     if (EasySP.init(MeetAndroidApplication.getInstance()).getBoolean(Consts.AUTO_PLAY,false)) {
-                        postDelayed(autoSwipeRunable,2000);
+                        postDelayed(autoSwipeRunable,4000);
                     } else {
                         startVideo = false;
                     }
@@ -264,6 +264,8 @@ public class AutoGetPacketService extends BaseAccessibilityService {
                 }
                 break;
         }
+        ad = findViewByRealText("广告");
+        if (ad != null) return true;
         return false;
     }
 
