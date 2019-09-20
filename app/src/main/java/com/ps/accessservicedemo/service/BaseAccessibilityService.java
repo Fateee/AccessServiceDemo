@@ -271,6 +271,16 @@ public class BaseAccessibilityService extends AccessibilityService
         return null;
     }
 
+    public List<AccessibilityNodeInfo> findViewListByViewId(String viewId) {
+        AccessibilityNodeInfo accessibilityNodeInfo = getRootInActiveWindow();
+        if (accessibilityNodeInfo == null) {
+            return null;
+        }
+        List<AccessibilityNodeInfo> nodeInfoList =
+                accessibilityNodeInfo.findAccessibilityNodeInfosByViewId(viewId);
+        return nodeInfoList;
+    }
+
     public boolean isButtonCheckedById(String viewId) {
         AccessibilityNodeInfo rightRB = findViewByViewIdNoClick(viewId);
         if (rightRB != null && rightRB.isChecked()) {

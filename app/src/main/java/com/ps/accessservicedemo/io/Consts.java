@@ -21,6 +21,9 @@ public class Consts {
     public static final String HSJS = "com.ss.android.ugc.livelite";
     public static final String XYZQ = "com.xiaoyuzhuanqian";
 
+    //闪电盒子
+    public static final String SDHZ = "c.l.a";
+
     public static final String HBSP = "com.sanmiao.sound";
     //快看点
     public static final String KKD = "com.yuncheapp.android.pearl";
@@ -29,7 +32,7 @@ public class Consts {
     public static final int XYZQ_PACKAGE_NAME_VALUE = 521;
     public static final int SWIPE_VALUE = 522;
     public static final int AUTO_RANDOM_PLAY = 902;
-
+    public static final int AUTO_READ_NEWS_SDHZ = 903;
 
     //关注 赞
     public static final String sb_follow = "com.jm.video:id/attention";

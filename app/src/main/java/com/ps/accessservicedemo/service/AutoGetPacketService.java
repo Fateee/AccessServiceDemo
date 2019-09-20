@@ -1,37 +1,20 @@
 package com.ps.accessservicedemo.service;
 
-import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityNodeInfo;
-import android.widget.Toast;
 
-import com.ps.accessservicedemo.MainActivity;
 import com.ps.accessservicedemo.io.Consts;
 import com.ps.accessservicedemo.other.MeetAndroidApplication;
 import com.ps.accessservicedemo.tools.ForegroundAppUtil;
-import com.ps.accessservicedemo.tools.PacketUtil;
 import com.white.easysp.EasySP;
 
-import static com.ps.accessservicedemo.io.Consts.AUTO_RANDOM_PLAY;
-import static com.ps.accessservicedemo.io.Consts.DDQW;
-import static com.ps.accessservicedemo.io.Consts.HBSP;
-import static com.ps.accessservicedemo.io.Consts.HSJS;
-import static com.ps.accessservicedemo.io.Consts.LYQ;
-import static com.ps.accessservicedemo.io.Consts.MUI_INSTALLER;
-import static com.ps.accessservicedemo.io.Consts.MUI_security_MUI;
-import static com.ps.accessservicedemo.io.Consts.MUI_securitycenter;
-import static com.ps.accessservicedemo.io.Consts.QK_PACKAGE_NAME;
-import static com.ps.accessservicedemo.io.Consts.QK_PACKAGE_NAME_VALUE;
-import static com.ps.accessservicedemo.io.Consts.SB_PACKAGE_NAME;
-import static com.ps.accessservicedemo.io.Consts.SWIPE_VALUE;
-import static com.ps.accessservicedemo.io.Consts.XIAOZHUO;
-import static com.ps.accessservicedemo.io.Consts.XYZQ;
-import static com.ps.accessservicedemo.io.Consts.XYZQ_PACKAGE_NAME_VALUE;
-import static com.ps.accessservicedemo.io.Consts.ZHUANKE;
+import java.util.List;
+
+import static com.ps.accessservicedemo.io.Consts.*;
 
 
 /**
@@ -52,6 +35,7 @@ public class AutoGetPacketService extends BaseAccessibilityService {
     private long lastResumeTime;
     private boolean isSwiped = true;
     boolean startVideo = false;
+    boolean startRead = false;
     private boolean isRefreshed = true;
     private Runnable autoSwipeRunable = () -> swipeDelay(AUTO_RANDOM_PLAY);
 
@@ -113,6 +97,23 @@ public class AutoGetPacketService extends BaseAccessibilityService {
                     } else {
                         startVideo = false;
                     }
+                    break;
+                case AUTO_READ_NEWS_SDHZ:
+                    AccessibilityNodeInfo backBT = findViewByViewIdNoClick("c.l.a:id/back");
+                    if (backBT != null) {
+                        performViewClick(backBT);
+                    }
+                    newsIndex++;
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (isButtonCheckedByText("资讯")) {
+                                startReadNews();
+                            } else {
+                                startVideo = false;
+                            }
+                        }
+                    },2500);
                     break;
             }
         }
@@ -180,12 +181,66 @@ public class AutoGetPacketService extends BaseAccessibilityService {
 //                    bt.performAction(AccessibilityNodeInfo.ACTION_CLICK);
 //                }
                 break;
+            case SDHZ:
+                if (!startVideo && isButtonCheckedByText("资讯")) {
+                    startVideo = true;
+                    startReadNews();
+                }
+                break;
                 default:
-                    if (!startVideo && EasySP.init(MeetAndroidApplication.getInstance()).getBoolean(Consts.AUTO_PLAY,false)) {
-                        startVideo = true;
-                        swipeDelay(AUTO_RANDOM_PLAY);
-                    }
+                    autoSwipeSmallVideo();
                     break;
+        }
+    }
+
+    int newsIndex = 0;
+    int newsCount = 0;
+    AccessibilityNodeInfo recyclerView = null;
+    private void startReadNews() {
+        List<AccessibilityNodeInfo> recyclerViewList = findViewListByViewId("c.l.a:id/recyvlerview");
+        if (recyclerViewList != null && recyclerViewList.size() > 1) {
+            recyclerView = recyclerViewList.get(3);
+        }
+        if (recyclerView != null) {
+            newsCount = recyclerView.getChildCount();
+            Log.e(TAG, "newsIndex : "+newsIndex+" newsCount : "+newsCount);
+            if (newsCount > 0 && newsIndex < newsCount) {
+                AccessibilityNodeInfo itemView = recyclerView.getChild(newsIndex);
+                Log.e(TAG, "itemView : "+itemView);
+                if (itemView != null) {
+                    AccessibilityNodeInfo adItem = findViewByViewId(itemView, "c.l.a:id/action");
+                    if (adItem == null) {
+                        adItem = findViewByViewId(itemView, "c.l.a:id/native_ad_container");
+                    }
+                    if (adItem == null) {
+                        adItem = findViewByViewId(itemView, "c.l.a:id/video");
+                    }
+                    if (adItem == null) {
+                        boolean success = itemView.performAction(AccessibilityNodeInfo.ACTION_CLICK);
+                        Log.e(TAG, "click success : "+success);
+                        if (success) {
+                            int tempTime = EasySP.init(MeetAndroidApplication.getInstance()).getInt(Consts.TIME_SET,60);
+                            handler.sendEmptyMessageDelayed(AUTO_READ_NEWS_SDHZ,tempTime*1000);
+                        } else {
+                            handler.sendEmptyMessageDelayed(AUTO_READ_NEWS_SDHZ,1*1000);
+                        }
+                    } else {
+                        handler.sendEmptyMessageDelayed(AUTO_READ_NEWS_SDHZ,1*1000);
+                    }
+                }
+            } else {
+                dispatchGesture(true,"资讯");
+                newsIndex = -1;
+                newsCount = 0;
+                handler.sendEmptyMessageDelayed(AUTO_READ_NEWS_SDHZ,2500);
+            }
+        }
+    }
+
+    private void autoSwipeSmallVideo() {
+        if (!startVideo && EasySP.init(MeetAndroidApplication.getInstance()).getBoolean(Consts.AUTO_PLAY,false)) {
+            startVideo = true;
+            swipeDelay(AUTO_RANDOM_PLAY);
         }
     }
 
