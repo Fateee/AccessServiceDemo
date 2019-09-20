@@ -113,7 +113,7 @@ public class AutoGetPacketService extends BaseAccessibilityService {
                                 startVideo = false;
                             }
                         }
-                    },2500);
+                    },3000);
                     break;
             }
         }
