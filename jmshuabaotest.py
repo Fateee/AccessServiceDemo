@@ -210,7 +210,7 @@ if __name__ == '__main__':
         maxSec = 15
     else:
         # autologinForSB(phone_type)
-        minSec = 30
+        minSec = 40
         maxSec = 50
     minSecOffset = minSec - 10  # 5 #3
     maxSecOffset = maxSec - 10  # 18 #5

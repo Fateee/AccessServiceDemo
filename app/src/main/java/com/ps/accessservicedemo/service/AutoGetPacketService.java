@@ -219,8 +219,11 @@ public class AutoGetPacketService extends BaseAccessibilityService {
                         boolean success = itemView.performAction(AccessibilityNodeInfo.ACTION_CLICK);
                         Log.e(TAG, "click success : "+success);
                         if (success) {
-                            int tempTime = EasySP.init(MeetAndroidApplication.getInstance()).getInt(Consts.TIME_SET,60);
-                            handler.sendEmptyMessageDelayed(AUTO_READ_NEWS_SDHZ,tempTime*1000);
+                            if (defaultTime == 0) {
+                                defaultTime = EasySP.init(MeetAndroidApplication.getInstance()).getInt(Consts.TIME_SET,18);
+                            }
+                            int randomTime = getRandomNum(defaultTime, defaultTime+10);
+                            handler.sendEmptyMessageDelayed(AUTO_READ_NEWS_SDHZ,randomTime*1000);
                         } else {
                             handler.sendEmptyMessageDelayed(AUTO_READ_NEWS_SDHZ,1*1000);
                         }
