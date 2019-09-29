@@ -107,13 +107,13 @@ public class AutoGetPacketService extends BaseAccessibilityService {
                     handler.postDelayed(new Runnable() {
                         @Override
                         public void run() {
-                            if (isButtonCheckedByText("资讯")) {
+                            if (isButtonCheckedByText("首页")) {
                                 startReadNews();
                             } else {
                                 startVideo = false;
                             }
                         }
-                    },3000);
+                    },2500);
                     break;
             }
         }
@@ -182,7 +182,7 @@ public class AutoGetPacketService extends BaseAccessibilityService {
 //                }
                 break;
             case SDHZ:
-                if (!startVideo && isButtonCheckedByText("资讯")) {
+                if (!startVideo && isButtonCheckedByText("首页")) {
                     startVideo = true;
                     startReadNews();
                 }
@@ -199,7 +199,7 @@ public class AutoGetPacketService extends BaseAccessibilityService {
     private void startReadNews() {
         List<AccessibilityNodeInfo> recyclerViewList = findViewListByViewId("c.l.a:id/recyvlerview");
         if (recyclerViewList != null && recyclerViewList.size() > 1) {
-            recyclerView = recyclerViewList.get(3);
+            recyclerView = recyclerViewList.get(0);
         }
         if (recyclerView != null) {
             newsCount = recyclerView.getChildCount();
