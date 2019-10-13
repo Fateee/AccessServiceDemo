@@ -26,14 +26,29 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:textColor="#333333"
+            android:text="15"
             android:textSize="16sp"/>
     </LinearLayout>
+
+    <EditText
+        android:id="@+id/edit_time"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/brightness_ll"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="30dp"
+        android:inputType="phone|number"
+        android:maxLength="11"
+        android:numeric="integer"
+        android:singleLine="true"
+        android:textColor="#333333"
+        android:textSize="16sp" />
 
     <TextView
         android:id="@+id/left"
         android:layout_width="wrap_content"
         android:layout_height="40dp"
-        android:layout_below="@id/brightness_ll"
+        android:layout_below="@id/edit_time"
         android:layout_marginTop="40dp"
         android:gravity="center"
         android:padding="10dp"
@@ -47,7 +62,7 @@
         android:layout_height="40dp"
         android:layout_toRightOf="@id/left"
         android:layout_toLeftOf="@id/right_tv"
-        android:layout_below="@id/brightness_ll"
+        android:layout_below="@id/edit_time"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="40dp"
         android:max="180" />
@@ -58,7 +73,7 @@
         android:layout_width="wrap_content"
         android:layout_height="40dp"
         android:layout_alignParentRight="true"
-        android:layout_below="@id/brightness_ll"
+        android:layout_below="@id/edit_time"
         android:layout_marginTop="40dp"
         android:gravity="center"
         android:paddingRight="10dp"
