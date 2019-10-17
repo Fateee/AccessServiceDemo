@@ -76,8 +76,12 @@ public class BaseAccessibilityService extends AccessibilityService
     @Override
     public void onInterrupt() {
         Log.e(TAG, "onInterrupt=");
+        onServiceDisconnected();
     }
 
+    public void onServiceDisconnected() {
+
+    }
 
     @Override
     public void performBack() {

@@ -37,4 +37,5 @@ public class Consts {
     //关注 赞
     public static final String sb_follow = "com.jm.video:id/attention";
     public static final String sb_praise = "com.jm.video:id/praise";
+    public static final String RESET_TIME_ACTION = "RESET_TIME_ACTION";
 }

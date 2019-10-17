@@ -1,7 +1,12 @@
 package com.ps.accessservicedemo.service;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v4.content.LocalBroadcastManager;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.accessibility.AccessibilityEvent;
@@ -38,6 +43,15 @@ public class AutoGetPacketService extends BaseAccessibilityService {
     boolean startRead = false;
     private boolean isRefreshed = true;
     private Runnable autoSwipeRunable = () -> swipeDelay(AUTO_RANDOM_PLAY);
+    private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            handler.removeCallbacksAndMessages(null);
+            startVideo = false;
+        }
+    };
+    private IntentFilter intentFilter = new IntentFilter(Consts.RESET_TIME_ACTION);
+    private LocalBroadcastManager localBroadcastManager;
 
     public class ClickRunable implements Runnable {
         public String id;
@@ -192,6 +206,19 @@ public class AutoGetPacketService extends BaseAccessibilityService {
                     autoSwipeSmallVideo();
                     break;
         }
+    }
+
+    @Override
+    protected void onServiceConnected() {
+        super.onServiceConnected();
+        localBroadcastManager = LocalBroadcastManager.getInstance(this);
+        localBroadcastManager.registerReceiver(broadcastReceiver , intentFilter);
+    }
+
+    @Override
+    public void onServiceDisconnected() {
+        Log.e(TAG, "onServiceDisconnected");
+        localBroadcastManager.unregisterReceiver(broadcastReceiver);
     }
 
     int newsIndex = 0;

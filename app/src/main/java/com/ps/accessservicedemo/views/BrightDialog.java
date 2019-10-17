@@ -2,8 +2,10 @@ package com.ps.accessservicedemo.views;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.content.LocalBroadcastManager;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
@@ -88,6 +90,7 @@ public class BrightDialog extends Dialog {
         findViewById(R.id.confirm_tv).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                LocalBroadcastManager.getInstance(getContext()).sendBroadcast(new Intent(Consts.RESET_TIME_ACTION)) ;
                 String setTime = brightnessTv.getText().toString();
                 AutoGetPacketService.defaultTime = Integer.parseInt(setTime);
                 EasySP.init(MeetAndroidApplication.getInstance()).putInt(Consts.TIME_SET,AutoGetPacketService.defaultTime);
