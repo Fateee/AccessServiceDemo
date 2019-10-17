@@ -116,6 +116,7 @@ public class AutoGetPacketService extends BaseAccessibilityService {
                     },2500);
                     break;
             }
+            System.gc();
         }
     };
 
@@ -123,7 +124,7 @@ public class AutoGetPacketService extends BaseAccessibilityService {
     public void onAccessibilityEvent(AccessibilityEvent event) {
         CharSequence pkg = event.getPackageName();
         Log.i(TAG, "event pkg:" + pkg+" event type:" + event.getEventType());
-        if (TextUtils.isEmpty(pkg)) return;
+        if (TextUtils.isEmpty(pkg) || startVideo) return;
         if (pkg.equals("com.ps.accessservicedemo")) return;
         switch (pkg.toString()) {
             case XYZQ:
