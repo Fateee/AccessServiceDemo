@@ -176,9 +176,9 @@ public class BaseAccessibilityService extends AccessibilityService
                 } else {
                     AccessibilityNodeInfo accessibilityNodeInfo1 = paramAccessibilityNodeInfo.getParent();
                     AccessibilityNodeInfo accessibilityNodeInfo2 = accessibilityNodeInfo1.getParent();
-                    Log.e("QiangHongBao", "--parent widget------------" + accessibilityNodeInfo1.getClassName());
-                    Log.e("QiangHongBao", "--parent1 widget------------" + accessibilityNodeInfo2.getClassName());
-                    if (accessibilityNodeInfo1.getClassName().equals("android.widget.RelativeLayout") && accessibilityNodeInfo1.isClickable()) {
+                    Log.e("QiangHongBao", "--parent widget------------ " + accessibilityNodeInfo1.getClassName()+accessibilityNodeInfo1.isClickable());
+                    Log.e("QiangHongBao", "--parent1 widget------------ " + accessibilityNodeInfo2.getClassName()+accessibilityNodeInfo2.isClickable());
+                    if (accessibilityNodeInfo1.isClickable()) {
                         Log.e("QiangHongBao", "-- widget------------" + paramAccessibilityNodeInfo.getChildCount());
                         accessibilityNodeInfo1.performAction(AccessibilityNodeInfo.ACTION_CLICK);
                     }

@@ -46,8 +46,7 @@ public class AutoGetPacketService extends BaseAccessibilityService {
     private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            handler.removeCallbacksAndMessages(null);
-            startVideo = false;
+//            handler.removeCallbacksAndMessages(null);
         }
     };
     private IntentFilter intentFilter = new IntentFilter(Consts.RESET_TIME_ACTION);
@@ -303,7 +302,7 @@ public class AutoGetPacketService extends BaseAccessibilityService {
             }
             int randomTime = defaultTime;
             if (!exactly){
-                randomTime = getRandomNum(defaultTime, defaultTime+15);
+                randomTime = getRandomNum(defaultTime, defaultTime+5);
             }
             Log.e(TAG, "what: "+what+" randomTime: "+ randomTime);
             if (hasAd(what)) {
@@ -320,37 +319,39 @@ public class AutoGetPacketService extends BaseAccessibilityService {
 
     public boolean hasAd(int what) {
         AccessibilityNodeInfo ad = null;
-        String nowPkg = ForegroundAppUtil.getForegroundActivityName(MeetAndroidApplication.getInstance());
-        switch (nowPkg) {
-            case QK_PACKAGE_NAME:
-                ad = findViewByViewIdNoClick("com.jifen.qukan:id/af8");
-                if (ad != null) {
-                    return true;
-                }
-                break;
-            case XYZQ:
-                ad = findViewByViewIdNoClick("com.xiaoyuzhuanqian:id/title");
-                if (ad != null) {
-                    CharSequence title = ad.getText();
-                    if (TextUtils.isEmpty(title)) return false;
-                    if (title.toString().contains("广告")) {
-                        return true;
-                    }
-                }
-                break;
-            case HBSP:
-                ad = findViewByViewIdNoClick("com.sanmiao.sound:id/tt_video_ad_close_layout");
-                if (ad != null && ad.isClickable()) {
-                    ad.performAction(AccessibilityNodeInfo.ACTION_CLICK);
-                    return false;
-                }
-                ad = findViewByViewIdNoClick("com.sanmiao.sound:id/ad_container");
-                if (ad != null) {
-                    return true;
-                }
-                break;
-        }
+//        String nowPkg = ForegroundAppUtil.getForegroundActivityName(MeetAndroidApplication.getInstance());
+//        switch (nowPkg) {
+//            case QK_PACKAGE_NAME:
+//                ad = findViewByViewIdNoClick("com.jifen.qukan:id/af8");
+//                if (ad != null) {
+//                    return true;
+//                }
+//                break;
+//            case XYZQ:
+//                ad = findViewByViewIdNoClick("com.xiaoyuzhuanqian:id/title");
+//                if (ad != null) {
+//                    CharSequence title = ad.getText();
+//                    if (TextUtils.isEmpty(title)) return false;
+//                    if (title.toString().contains("广告")) {
+//                        return true;
+//                    }
+//                }
+//                break;
+//            case HBSP:
+//                ad = findViewByViewIdNoClick("com.sanmiao.sound:id/tt_video_ad_close_layout");
+//                if (ad != null && ad.isClickable()) {
+//                    ad.performAction(AccessibilityNodeInfo.ACTION_CLICK);
+//                    return false;
+//                }
+//                ad = findViewByViewIdNoClick("com.sanmiao.sound:id/ad_container");
+//                if (ad != null) {
+//                    return true;
+//                }
+//                break;
+//        }
         ad = findViewByRealText("广告");
+        if (ad != null) return true;
+        ad = findViewByViewIdNoClick("com.coohua.xinwenzhuan:id/mini_video_popup");
         if (ad != null) return true;
         return false;
     }
